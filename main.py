@@ -11,10 +11,10 @@ from helplist import functionlist,weeblist,normalCommands
 from apifunction import  fetchanimuquote , fetchanimuboob , fetchanimucuddle , fetchanimuhentai , fetchanimuhug , fetchanimukiss , fetchanimupat , fetchanimuslap, fetchanimuwaifunsfw,fetchanimubite, fetchanimucry , fetchanimutrap ,fetchanimubonk , fetchanimushinobu, fetchanimuneko, fetchanimumegumin, fetchanimuyeet, fetchanimupunch, fetchanimuhi5, fetchanimunekosfw
 from ChanceFunctions import lovecalculator,askchance,choosechoices
 
-#my_secret = os.environ['discordToken']
+my_secret = os.environ['DISCORD_TOKEN']
 
 #Drazz Token
-TOKEN = 'OTQ3NzEwNTY5NzE1MjA0MDk2.YhxOPw.HAjEy86-zD4ndMxh040776tpaPY'
+#TOKEN = 'OTQ3NzEwNTY5NzE1MjA0MDk2.YhxOPw.7ffE6o-dhqitW7RpyJMhUOh9v8E'
 
 #CxKingx Token
 #TOKEN = 'ODQ3MDE5OTQxMjExMTQ0MjEz.YK3-yg.xQg9Ps5e7UUIBY6rz7Vs6crgr7E'
@@ -374,4 +374,4 @@ async def on_message(message):
         await message_channel.connect()
     
 
-client.run(TOKEN )
+client.run(my_secret)
