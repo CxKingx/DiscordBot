@@ -13,11 +13,6 @@ from ChanceFunctions import lovecalculator,askchance,choosechoices
 
 my_secret = os.environ['DISCORD_TOKEN']
 
-#Drazz Token
-#TOKEN = 'OTQ3NzEwNTY5NzE1MjA0MDk2.YhxOPw.7ffE6o-dhqitW7RpyJMhUOh9v8E'
-
-#CxKingx Token
-#TOKEN = 'ODQ3MDE5OTQxMjExMTQ0MjEz.YK3-yg.xQg9Ps5e7UUIBY6rz7Vs6crgr7E'
 
 client = discord.Client()
 
