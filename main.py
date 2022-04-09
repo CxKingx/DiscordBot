@@ -351,6 +351,10 @@ async def on_message(message):
     if user_message.lower() == 'should i listen to argo?' :
         await message.channel.send('burmese detected opinion rejected')
         return
+#
+    if user_message.lower() == '^arturselfie' :
+        await message.channel.send('https://cdn.discordapp.com/attachments/846380741209620483/962244564297584691/IMG_0635.jpg')
+        return
 
     if user_message.lower() == '^help' :
         embedchance = functionlist()
