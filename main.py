@@ -5,8 +5,7 @@ import random
 import requests
 #import youtube_dl
 
-
-
+#Test From Pycharm
 from helplist import functionlist,weeblist,normalCommands
 from apifunction import  fetchanimuquote , fetchanimuboob , fetchanimucuddle , fetchanimuhentai , fetchanimuhug , fetchanimukiss , fetchanimupat , fetchanimuslap, fetchanimuwaifunsfw,fetchanimubite, fetchanimucry , fetchanimutrap ,fetchanimubonk , fetchanimushinobu, fetchanimuneko, fetchanimumegumin, fetchanimuyeet, fetchanimupunch, fetchanimuhi5, fetchanimunekosfw
 from ChanceFunctions import lovecalculator,askchance,choosechoices
