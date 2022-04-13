@@ -24,7 +24,7 @@ cur.execute(
 # Main='195476844'
 # smrf='183110040'
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',[DiscordID,Main,smrf])
-
+#
 #cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['241817188665786369','195476844','183110040'])
 # someone
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['211728160834846720','258376469','none'])
