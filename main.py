@@ -6,7 +6,7 @@ import requests
 # import youtube_dl
 import sqlite3
 # Test From Pycharm
-from DiscordBot.DatabaseFunctions import getDotaID, registerDotaID, randomregister
+from DatabaseFunctions import getDotaID, registerDotaID, randomregister
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import fetchanimuquote, fetchanimuboob, fetchanimucuddle, fetchanimuhentai, fetchanimuhug, \
     fetchanimukiss, fetchanimupat, fetchanimuslap, fetchanimuwaifunsfw, fetchanimubite, fetchanimucry, fetchanimutrap, \
@@ -36,11 +36,6 @@ cur.execute(
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['360783668169670656','thibse main','thisbe smurf'])
 # trepi
 #cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['294487555267756032','95353172','none'])
-
-print('Selecting fdrom database')
-cur.execute('SELECT * FROM DotaID WHERE DiscordID = "241817188665786369"')
-result = cur.fetchall()
-print(result)
 
 con.commit()
 con.close()
