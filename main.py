@@ -6,7 +6,7 @@ import requests
 # import youtube_dl
 import sqlite3
 # Test From Pycharm
-from DatabaseFunctions import getDotaID, registerDotaID, randomregister
+from DatabaseFunctions import getDotaID, registerDotaID ,deleteDotaID
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import fetchanimuquote, fetchanimuboob, fetchanimucuddle, fetchanimuhentai, fetchanimuhug, \
     fetchanimukiss, fetchanimupat, fetchanimuslap, fetchanimuwaifunsfw, fetchanimubite, fetchanimucry, fetchanimutrap, \
@@ -25,7 +25,7 @@ cur.execute(
 # smrf='183110040'
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',[DiscordID,Main,smrf])
 #
-#cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['241817188665786369','195476844','183110040'])
+# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['241817188665786369','195476844','183110040'])
 # someone
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['211728160834846720','258376469','none'])
 # shuri
@@ -35,7 +35,7 @@ cur.execute(
 # thisbe
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['360783668169670656','thibse main','thisbe smurf'])
 # trepi
-#cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['294487555267756032','95353172','none'])
+# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['294487555267756032','95353172','none'])
 
 con.commit()
 con.close()
@@ -81,28 +81,38 @@ async def on_message(message):
             embedVar = getDotaID(message.author.id)
             await message.channel.send(embed=embedVar)
             return
-    if split_message[0]=='^testregister':
-        randomregister()
-        return
 
     if (split_message[0] == '^register') and (len(split_message) == 3):
-        #await message.channel.send('correct input but does nothing for now')
-        if (split_message[1] == 'main'):
-            #await message.channel.send('correct register to '+split_message[1]+' DotaID: '+split_message[2])
-            embedVar=registerDotaID(message.author.id,split_message[1],split_message[2])
+        if split_message[1] == 'main':
+            embedVar = registerDotaID(message.author.id, split_message[1], split_message[2])
             await message.channel.send(embed=embedVar)
-        elif (split_message[1] == 'smurf'):
-            #await message.channel.send('correct register to '+split_message[1]+' DotaID: '+split_message[2])
-            embedVar=registerDotaID(message.author.id, split_message[1], split_message[2])
+        elif split_message[1] == 'smurf':
+            embedVar = registerDotaID(message.author.id, split_message[1], split_message[2])
             await message.channel.send(embed=embedVar)
         else:
             await message.channel.send('Wrong syntax, please give "^register main/smurf DotaID"')
         return
     elif (split_message[0] == '^register') and (len(split_message) != 3):
         await message.channel.send('Wrong syntax, please give "^register main/smurf DotaID"')
+        return
+
+    adminfunction = ['^forceregister', '^deleteid', '^forceupdate']
+    if message.author.id == 241817188665786369 and split_message[0] == '^forceregister' and (len(split_message) == 4):
+        embedVar = registerDotaID(split_message[1], split_message[2], split_message[3])
+        await message.channel.send('Force Register ')
+        await message.channel.send(embed=embedVar)
+    elif message.author.id == 241817188665786369 and split_message[0] == '^deleteid' and (len(split_message) == 2):
+        await message.channel.send('Delete ID ')
+        embedVar=deleteDotaID(split_message[1])
+        await message.channel.send(embed=embedVar)
+
+    elif message.author.id != 241817188665786369 and any(x == user_message.lower() for x in adminfunction):
+        await message.channel.send('Function only available to CxKingx')
+        return
 
 
-    if ((split_message[0] == '^lc') and (len(split_message) == 3)):
+
+    if (split_message[0] == '^lc') and (len(split_message) == 3):
         if (split_message[1] != "") and (split_message[2] != ""):
             embedVar = lovecalculator(split_message)
             await message.channel.send(embed=embedVar)
@@ -402,7 +412,8 @@ async def on_message(message):
                   'https://tenor.com/view/who-asked-nobody-asked-nobody-cares-damn-thats-crazy-gif-20130694',
                   'https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294',
                   'https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294',
-                  'https://tenor.com/view/bean-dance-crazy-aye-dats-fr-crazy-hoe-now-show-me-one-person-who-asked-gif-16195074']
+                  'https://tenor.com/view/bean-dance-crazy-aye-dats-fr-crazy-hoe-now-show-me-one-person-who-asked-gif-16195074',
+                  'https://tenor.com/view/asked-gif-19790611']
 
     if 'who asked' in user_message or any(x == user_message.lower() for x in whoasklist) or 'did i ask' in user_message:
         await message.reply('I did')
