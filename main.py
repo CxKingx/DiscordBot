@@ -1,3 +1,4 @@
+import asyncio
 import os
 import discord
 
@@ -6,13 +7,14 @@ import requests
 # import youtube_dl
 import sqlite3
 # Test From Pycharm
-from DatabaseFunctions import getDotaID, registerDotaID ,deleteDotaID
+from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import fetchanimuquote, fetchanimuboob, fetchanimucuddle, fetchanimuhentai, fetchanimuhug, \
     fetchanimukiss, fetchanimupat, fetchanimuslap, fetchanimuwaifunsfw, fetchanimubite, fetchanimucry, fetchanimutrap, \
     fetchanimubonk, fetchanimushinobu, fetchanimuneko, fetchanimumegumin, fetchanimuyeet, fetchanimupunch, \
     fetchanimuhi5, fetchanimunekosfw
 from ChanceFunctions import lovecalculator, askchance, choosechoices
+from ReactionsFunction import WaitReaction
 
 my_secret = os.environ['DISCORD_TOKEN']
 
@@ -56,9 +58,34 @@ async def on_ready():
 #     )
 #     mbet.set_image(url=)
 
+#kept_message=None
+# userTotal=0
+# @client.event
+# async def on_reaction_remove(reaction,user):
+#     await reaction.message.channel.send("on_raw_reaction_remove called")
+# @client.event
+# async def on_reaction_add(reaction, user):
+#     global userTotal
+#     await reaction.message.channel.send('Total reaction is '+str(reaction.count)+' emoji is '+str(reaction))
+#     if reaction.message == kept_message and userTotal<10 and str(reaction) == '<:watamepog:781536094591123546>':
+#         #await reaction.message.channel.send(str(user)+" Reacted on the Que Message and total is"+str(reaction.count))
+#         new_Que_message = que_message+' '+str(user)
+#         embedVar = discord.Embed(title=new_Que_message,
+#                                  description='',
+#                                  color=0x00ff00)
+#         #await kept_message.edit(content = (kept_message.content+' \n'+str(user)))
+#         await kept_message.edit(embed=embedVar)
+#         userTotal=userTotal+1
+#         if userTotal==4:
+#             await reaction.message.channel.send("Que pop ")
+
+
+
 
 @client.event
 async def on_message(message):
+    global kept_message
+    global que_message
     username = str(message.author).split('#')[0]
     user_message = str(message.content)
     split_message = user_message.split()
@@ -71,7 +98,62 @@ async def on_message(message):
     print(message.author.id)
 
     if message.author == client.user:
+        # if message.content == 'Que pop':
+        #     await message.channel.send("Deleting Que ")
+        #     kept_message=None
+        #     userTotal=0
         return
+    #print(message)
+    # if message.content == 'testResponse':
+    #     sent_message = await message.channel.send("Waiting for response...")
+    #     try:
+    #         res = await client.wait_for(
+    #             "message",
+    #             check=lambda x: x.channel.id == message.channel.id
+    #                             and message.author.id == x.author.id
+    #                             and x.content.lower() == "yes"
+    #                             or x.content.lower() == "no",
+    #             timeout=5,
+    #         )
+    #     except Exception as e:
+    #         await sent_message.edit(content=f"{message.author} No reply in time")
+    #     if res.content.lower() == "yes":
+    #         await sent_message.edit(content=f"{message.author} said yes!")
+    #     else:
+    #         await sent_message.edit(content=f"{message.author} said no!")
+    #     return
+    #
+    # if message.content == 'testReaction':
+    #
+    #     kept_message2= await message.channel.send("Waiting for response...")
+    #     try:
+    #         reaction, user = await client.wait_for(
+    #             "reaction_add",
+    #
+    #             timeout=15,
+    #             check=None,
+    #         )
+    #
+    #     except asyncio.TimeoutError:
+    #         await message.channel.send('no react')
+    #     else:
+    #         await message.channel.send('a react')
+    #     return
+    #
+    #
+    # if message.content == 'testQ':
+    #     emoji = '<:watamepog:781536094591123546>'
+    #     que_message="Starting Que, press any reaction try"
+    #     embedVar = discord.Embed(title=que_message,
+    #                              description='',
+    #                              color=0x00ff00)
+    #     kept_message = await message.channel.send(embed=embedVar)
+    #     await kept_message.add_reaction(emoji)
+    #     return
+    # if message.content == 'endQ':
+    #     await message.channel.send("Q end")
+    #     kept_message=None
+
     if split_message[0] == '^id':
         if message.mentions:
             embedVar2 = getDotaID(message.mentions[0].id)
@@ -103,14 +185,12 @@ async def on_message(message):
         await message.channel.send(embed=embedVar)
     elif message.author.id == 241817188665786369 and split_message[0] == '^deleteid' and (len(split_message) == 2):
         await message.channel.send('Delete ID ')
-        embedVar=deleteDotaID(split_message[1])
+        embedVar = deleteDotaID(split_message[1])
         await message.channel.send(embed=embedVar)
 
     elif message.author.id != 241817188665786369 and any(x == user_message.lower() for x in adminfunction):
         await message.channel.send('Function only available to CxKingx')
         return
-
-
 
     if (split_message[0] == '^lc') and (len(split_message) == 3):
         if (split_message[1] != "") and (split_message[2] != ""):
@@ -433,7 +513,10 @@ async def on_message(message):
         await message.channel.send(
             'https://cdn.discordapp.com/attachments/846380741209620483/962244564297584691/IMG_0635.jpg')
         return
-
+    if user_message.lower() == '^based_1':
+        await message.channel.send(
+            'https://cdn.discordapp.com/attachments/846380741209620483/965488114749542430/Screenshot_20220418_134457.jpg')
+        return
     if user_message.lower() == '^help':
         embedchance = functionlist()
         embedweeb = weeblist()
