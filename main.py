@@ -13,10 +13,12 @@ from apifunction import fetchanimuquote, fetchanimuboob, fetchanimucuddle, fetch
     fetchanimukiss, fetchanimupat, fetchanimuslap, fetchanimuwaifunsfw, fetchanimubite, fetchanimucry, fetchanimutrap, \
     fetchanimubonk, fetchanimushinobu, fetchanimuneko, fetchanimumegumin, fetchanimuyeet, fetchanimupunch, \
     fetchanimuhi5, fetchanimunekosfw
-from ChanceFunctions import lovecalculator, askchance, choosechoices
+# from ChanceFunctions import lovecalculator, askchance, choosechoices
+from ChanceFunctions import ChanceFunc
 from ReactionsFunction import WaitReaction
 
 my_secret = os.environ['DISCORD_TOKEN']
+
 
 con = sqlite3.connect('DrazzBot.db')
 cur = con.cursor()
@@ -47,7 +49,6 @@ con.close()
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['360783668169670656','thibse main','thisbe smurf'])
 # trepi
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['294487555267756032','95353172','none'])
-
 
 
 client = discord.Client()
@@ -101,6 +102,8 @@ async def on_message(message):
     channelID = str(message.channel.id)
     channel_nsfw = message.channel.is_nsfw()
     print(f'{username}: {user_message} ({channel}) (ID: {channelID})')
+    chancefunc = ChanceFunc(split_message)
+
     print(split_message)
     print(len(split_message))
     print(message.author.id)
@@ -220,7 +223,7 @@ async def on_message(message):
 
     if (split_message[0] == '^lc') and (len(split_message) == 3):
         if (split_message[1] != "") and (split_message[2] != ""):
-            embedVar = lovecalculator(split_message)
+            embedVar = chancefunc.lovecalculator()
             await message.channel.send(embed=embedVar)
             return
     elif (split_message[0] == '^lc') and (len(split_message) != 3):
@@ -228,11 +231,11 @@ async def on_message(message):
         return
 
     if (split_message[0] == '^askchance'):
-        chancestring = askchance(split_message)
+        chancestring = chancefunc.askchance(split_message)
         await message.channel.send(chancestring)
 
     if (split_message[0] == '^choose'):
-        embedVar = choosechoices(split_message)
+        embedVar = chancefunc.choosechoices(split_message)
         await message.channel.send(embed=embedVar)
         return
 
