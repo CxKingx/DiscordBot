@@ -231,11 +231,11 @@ async def on_message(message):
         return
 
     if (split_message[0] == '^askchance'):
-        chancestring = chancefunc.askchance(split_message)
+        chancestring = chancefunc.askchance()
         await message.channel.send(chancestring)
 
     if (split_message[0] == '^choose'):
-        embedVar = chancefunc.choosechoices(split_message)
+        embedVar = chancefunc.choosechoices()
         await message.channel.send(embed=embedVar)
         return
 
