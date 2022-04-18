@@ -1,6 +1,7 @@
 import sqlite3
 
 import discord
+import validators
 
 
 def getDotaID(discordID):
@@ -91,3 +92,66 @@ def deleteDotaID(discordID):
     con.commit()
     con.close()
     return embed
+
+def registerImage(imagename , imagelink):
+    con = sqlite3.connect('ImageStorage.db')
+    cur = con.cursor()
+    executeString = 'SELECT * FROM ImageStorage WHERE imageName ="' + str(imagename) + '"'
+    # print(executeString)
+    cur.execute(executeString)
+    result = cur.fetchall()
+    # print('The result len is'+str(len(result)))
+    if (len(result) == 0):
+        # print('no dota img regiester')
+        if validators.url(imagelink):
+            cur.execute('''INSERT INTO ImageStorage ( imagename, imagelink) VALUES(?,?)''',
+                        [str(imagename), str(imagelink)])
+            message = 'Image ' + str(imagename) + ' registered'
+        else:
+            message = 'Not a valid image link'
+
+
+    else:
+        message = 'A image with name:' + str(imagename) + ' is registered'
+    con.commit()
+    con.close()
+
+    return message
+
+def getImage(imagename):
+    con = sqlite3.connect('ImageStorage.db')
+    cur = con.cursor()
+    executeString = 'SELECT * FROM ImageStorage WHERE imageName ="' + str(imagename) + '"'
+    # print(executeString)
+    cur.execute(executeString)
+    result = cur.fetchall()
+    # print('The result len is'+str(len(result)))
+    if (len(result) == 0):
+        # print('no dota id regiester')
+        message='No image with this name is registered '
+    else:
+        print(result)
+        print(result[0][0])
+        print(result[0][1])
+        print(result[0][2])
+        #print(result[0][3])
+        message = result[0][2]
+    con.close()
+    return message
+
+def deleteimage(imagename):
+    con = sqlite3.connect('ImageStorage.db')
+    cur = con.cursor()
+    executeString = 'SELECT * FROM ImageStorage WHERE imageName ="' + str(imagename) + '"'
+    cur.execute(executeString)
+    result = cur.fetchall()
+    if len(result) == 0:
+        message = 'Nothing to Delete'
+    else:
+
+        updatestring = 'DELETE FROM ImageStorage WHERE imageName ="' + str(imagename) + '"'
+        cur.execute(updatestring)
+        message = 'Image '+str(imagename)+' is deleted'
+    con.commit()
+    con.close()
+    return message

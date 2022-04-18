@@ -1,13 +1,13 @@
 import asyncio
 import os
 import discord
-
+import validators
 import random
 import requests
 # import youtube_dl
 import sqlite3
 # Test From Pycharm
-from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID
+from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import fetchanimuquote, fetchanimuboob, fetchanimucuddle, fetchanimuhentai, fetchanimuhug, \
     fetchanimukiss, fetchanimupat, fetchanimuslap, fetchanimuwaifunsfw, fetchanimubite, fetchanimucry, fetchanimutrap, \
@@ -22,6 +22,15 @@ con = sqlite3.connect('DrazzBot.db')
 cur = con.cursor()
 cur.execute(
     '''CREATE TABLE IF NOT EXISTS DotaID (id integer PRIMARY KEY AUTOINCREMENT , DiscordID , MainID , SmurfID)''')
+con.commit()
+con.close()
+
+con = sqlite3.connect('ImageStorage.db')
+cur = con.cursor()
+cur.execute(
+    '''CREATE TABLE IF NOT EXISTS ImageStorage (id integer PRIMARY KEY AUTOINCREMENT , imageName , imageLink)''')
+con.commit()
+con.close()
 # DiscordID="241817188665786369"
 # Main='195476844'
 # smrf='183110040'
@@ -39,8 +48,7 @@ cur.execute(
 # trepi
 # cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['294487555267756032','95353172','none'])
 
-con.commit()
-con.close()
+
 
 client = discord.Client()
 
@@ -78,7 +86,7 @@ async def on_ready():
 #         userTotal=userTotal+1
 #         if userTotal==4:
 #             await reaction.message.channel.send("Que pop ")
-
+#
 
 
 
@@ -98,49 +106,49 @@ async def on_message(message):
     print(message.author.id)
 
     if message.author == client.user:
-        # if message.content == 'Que pop':
-        #     await message.channel.send("Deleting Que ")
-        #     kept_message=None
-        #     userTotal=0
+        if message.content == 'Que pop':
+            await message.channel.send("Deleting Que ")
+            kept_message=None
+            userTotal=0
         return
-    #print(message)
-    # if message.content == 'testResponse':
-    #     sent_message = await message.channel.send("Waiting for response...")
-    #     try:
-    #         res = await client.wait_for(
-    #             "message",
-    #             check=lambda x: x.channel.id == message.channel.id
-    #                             and message.author.id == x.author.id
-    #                             and x.content.lower() == "yes"
-    #                             or x.content.lower() == "no",
-    #             timeout=5,
-    #         )
-    #     except Exception as e:
-    #         await sent_message.edit(content=f"{message.author} No reply in time")
-    #     if res.content.lower() == "yes":
-    #         await sent_message.edit(content=f"{message.author} said yes!")
-    #     else:
-    #         await sent_message.edit(content=f"{message.author} said no!")
-    #     return
-    #
-    # if message.content == 'testReaction':
-    #
-    #     kept_message2= await message.channel.send("Waiting for response...")
-    #     try:
-    #         reaction, user = await client.wait_for(
-    #             "reaction_add",
-    #
-    #             timeout=15,
-    #             check=None,
-    #         )
-    #
-    #     except asyncio.TimeoutError:
-    #         await message.channel.send('no react')
-    #     else:
-    #         await message.channel.send('a react')
-    #     return
-    #
-    #
+    print(message)
+    if message.content == 'testResponse':
+        sent_message = await message.channel.send("Waiting for response...")
+        try:
+            res = await client.wait_for(
+                "message",
+                check=lambda x: x.channel.id == message.channel.id
+                                and message.author.id == x.author.id
+                                and x.content.lower() == "yes"
+                                or x.content.lower() == "no",
+                timeout=5,
+            )
+        except Exception as e:
+            await sent_message.edit(content=f"{message.author} No reply in time")
+        if res.content.lower() == "yes":
+            await sent_message.edit(content=f"{message.author} said yes!")
+        else:
+            await sent_message.edit(content=f"{message.author} said no!")
+        return
+
+    if message.content == 'testReaction':
+
+        kept_message2= await message.channel.send("Waiting for response...")
+        try:
+            reaction, user = await client.wait_for(
+                "reaction_add",
+
+                timeout=15,
+                check=None,
+            )
+
+        except asyncio.TimeoutError:
+            await message.channel.send('no react')
+        else:
+            await message.channel.send('a react')
+        return
+
+
     # if message.content == 'testQ':
     #     emoji = '<:watamepog:781536094591123546>'
     #     que_message="Starting Que, press any reaction try"
@@ -191,6 +199,24 @@ async def on_message(message):
     elif message.author.id != 241817188665786369 and any(x == user_message.lower() for x in adminfunction):
         await message.channel.send('Function only available to CxKingx')
         return
+
+    if (split_message[0] == '^save') and (len(split_message) == 3):
+        savestatus = registerImage(split_message[1],split_message[2])
+        await message.channel.send(savestatus)
+    elif (split_message[0] == '^save') and (len(split_message) != 3):
+        await message.channel.send('Wrong Syntax, please use ^save imgname imglink')
+
+    if (split_message[0] == '^get') and (len(split_message) == 2):
+        imagemessage = getImage(split_message[1])
+        await message.channel.send(imagemessage)
+    elif (split_message[0] == '^get') and (len(split_message) != 2):
+        await message.channel.send('Wrong Syntax, please use ^get imgname')
+
+    if (split_message[0] == '^delete') and (len(split_message) == 2):
+        imagemessage = deleteimage(split_message[1])
+        await message.channel.send(imagemessage)
+    elif (split_message[0] == '^get') and (len(split_message) != 2):
+        await message.channel.send('Wrong Syntax, please use ^deleteimage imgname')
 
     if (split_message[0] == '^lc') and (len(split_message) == 3):
         if (split_message[1] != "") and (split_message[2] != ""):
@@ -509,14 +535,7 @@ async def on_message(message):
         await message.channel.send('burmese detected opinion rejected')
         return
     #
-    if user_message.lower() == '^arturselfie':
-        await message.channel.send(
-            'https://cdn.discordapp.com/attachments/846380741209620483/962244564297584691/IMG_0635.jpg')
-        return
-    if user_message.lower() == '^based_1':
-        await message.channel.send(
-            'https://cdn.discordapp.com/attachments/846380741209620483/965488114749542430/Screenshot_20220418_134457.jpg')
-        return
+
     if user_message.lower() == '^help':
         embedchance = functionlist()
         embedweeb = weeblist()
