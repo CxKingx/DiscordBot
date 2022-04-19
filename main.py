@@ -482,6 +482,11 @@ async def on_message(message):
         await message.channel.send(embed=embedVar)
         return
 
+    if split_message[0] == '^server':
+        embedVar2 = discord.Embed(title=message.guild.name, color=0x00ff00)
+        embedVar2.set_image(url=message.guild.icon_url)
+        await message.channel.send(embed=embedVar2)
+
     if split_message[0] == '^avatar':
         if message.mentions:
 
