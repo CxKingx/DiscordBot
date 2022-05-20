@@ -7,8 +7,11 @@ import requests
 # import youtube_dl
 import sqlite3
 # Test From Pycharm
-from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage
-from helplist import functionlist, weeblist, normalCommands
+from discord import channel
+from discord.utils import get
+
+from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage , getImageList
+from helplist import functionlist, weeblist, normalCommands , databaseCommands
 from apifunction import fetchanimuquote, fetchanimuboob, fetchanimucuddle, fetchanimuhentai, fetchanimuhug, \
     fetchanimukiss, fetchanimupat, fetchanimuslap, fetchanimuwaifunsfw, fetchanimubite, fetchanimucry, fetchanimutrap, \
     fetchanimubonk, fetchanimushinobu, fetchanimuneko, fetchanimumegumin, fetchanimuyeet, fetchanimupunch, \
@@ -18,8 +21,7 @@ from ChanceFunctions import ChanceFunc
 from ReactionsFunction import WaitReaction
 
 my_secret = os.environ['DISCORD_TOKEN']
-
-
+intents = discord.Intents.all()
 con = sqlite3.connect('DrazzBot.db')
 cur = con.cursor()
 cur.execute(
@@ -70,22 +72,27 @@ async def on_ready():
 #kept_message=None
 # userTotal=0
 # @client.event
-# async def on_reaction_remove(reaction,user):
-#     await reaction.message.channel.send("on_raw_reaction_remove called")
+# async def on_raw_reaction_remove(payload):
+#         channel = discord.utils.get(client.get_all_channels(), id=payload.channel_id)
+#         message = await channel.fetch_message(payload.message_id)
+#         #user = message.guild.get_member(payload.user_id)
+#         #member = discord.utils.get(message.guild.members, id=payload.user_id)
+#         await message.channel.send('<@!'+str(payload.user_id)+'> has unqued ')
 # @client.event
 # async def on_reaction_add(reaction, user):
 #     global userTotal
 #     await reaction.message.channel.send('Total reaction is '+str(reaction.count)+' emoji is '+str(reaction))
 #     if reaction.message == kept_message and userTotal<10 and str(reaction) == '<:watamepog:781536094591123546>':
 #         #await reaction.message.channel.send(str(user)+" Reacted on the Que Message and total is"+str(reaction.count))
+#
 #         new_Que_message = que_message+' '+str(user)
 #         embedVar = discord.Embed(title=new_Que_message,
 #                                  description='',
 #                                  color=0x00ff00)
-#         #await kept_message.edit(content = (kept_message.content+' \n'+str(user)))
-#         await kept_message.edit(embed=embedVar)
+#         await kept_message.edit(content = (kept_message.content+' \n'+str(user)))
+#         #await kept_message.edit(embed=embedVar)
 #         userTotal=userTotal+1
-#         if userTotal==4:
+#         if userTotal==5:
 #             await reaction.message.channel.send("Que pop ")
 #
 
@@ -115,6 +122,11 @@ async def on_message(message):
             userTotal=0
         return
     print(message)
+    if split_message[0] == 'delmsg':
+        await message.delete()
+        original = await message.channel.fetch_message(split_message[1])
+        #newmsg = message.channel.fetch_message(split_message[1])
+        await original.delete()
     if message.content == 'testResponse':
         sent_message = await message.channel.send("Waiting for response...")
         try:
@@ -152,18 +164,18 @@ async def on_message(message):
         return
 
 
-    # if message.content == 'testQ':
-    #     emoji = '<:watamepog:781536094591123546>'
-    #     que_message="Starting Que, press any reaction try"
-    #     embedVar = discord.Embed(title=que_message,
-    #                              description='',
-    #                              color=0x00ff00)
-    #     kept_message = await message.channel.send(embed=embedVar)
-    #     await kept_message.add_reaction(emoji)
-    #     return
-    # if message.content == 'endQ':
-    #     await message.channel.send("Q end")
-    #     kept_message=None
+    if message.content == 'testQ':
+        emoji = '<:watamepog:781536094591123546>'
+        que_message="Starting Que, press any reaction try"
+        embedVar = discord.Embed(title=que_message,
+                                 description='',
+                                 color=0x00ff00)
+        kept_message = await message.channel.send(embed=embedVar)
+        await kept_message.add_reaction(emoji)
+        return
+    if message.content == 'endQ':
+        await message.channel.send("Q end")
+        kept_message=None
 
     if split_message[0] == '^id':
         if message.mentions:
@@ -218,8 +230,15 @@ async def on_message(message):
     if (split_message[0] == '^delete') and (len(split_message) == 2):
         imagemessage = deleteimage(split_message[1])
         await message.channel.send(imagemessage)
-    elif (split_message[0] == '^get') and (len(split_message) != 2):
+    elif (split_message[0] == '^delete') and (len(split_message) != 2):
         await message.channel.send('Wrong Syntax, please use ^deleteimage imgname')
+
+    if (split_message[0] == '^imglist'):
+        #imagemessage = deleteimage(split_message[1])
+        embedVar = getImageList()
+        await message.channel.send(embed=embedVar)
+        #await message.channel.send(imagemessage)
+
 
     if (split_message[0] == '^lc') and (len(split_message) == 3):
         if (split_message[1] != "") and (split_message[2] != ""):
@@ -516,7 +535,7 @@ async def on_message(message):
         return
 
     whoasklist = ['who asked?', 'Who asked', 'Who asked?', 'who ask', 'no one asked your opinion', 'no one asked',
-                  'tell me who asked', 'ok but who asked',
+                  'tell me who asked', 'ok but who asked','did i ask',
                   'https://tenor.com/view/thats-crazy-fr-hoe-who-asked-gif-21374201',
                   'https://tenor.com/view/among-us-killer-bean-tf-asked-who-asked-dance-gif-18838836',
                   'https://tenor.com/view/who-asked-k-on-yui-anime-anime-girl-gif-24260375',
@@ -529,7 +548,7 @@ async def on_message(message):
                   'https://tenor.com/view/bean-dance-crazy-aye-dats-fr-crazy-hoe-now-show-me-one-person-who-asked-gif-16195074',
                   'https://tenor.com/view/asked-gif-19790611']
 
-    if 'who asked' in user_message or any(x == user_message.lower() for x in whoasklist) or 'did i ask' in user_message:
+    if 'who asked' in user_message or any(x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message:
         await message.reply('I did')
         return
 
@@ -548,9 +567,11 @@ async def on_message(message):
         embedchance = functionlist()
         embedweeb = weeblist()
         embednormal = normalCommands()
+        embeddatabase = databaseCommands()
         await message.channel.send(embed=embedchance)
         await message.channel.send(embed=embedweeb)
         await message.channel.send(embed=embednormal)
+        await message.channel.send(embed=embeddatabase)
 
         return
     # if user_message.lower()

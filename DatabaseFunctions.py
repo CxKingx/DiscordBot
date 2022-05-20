@@ -131,9 +131,9 @@ def getImage(imagename):
         message='No image with this name is registered '
     else:
         print(result)
-        print(result[0][0])
-        print(result[0][1])
-        print(result[0][2])
+        print(result[0][0]) # ID
+        print(result[0][1]) # Name
+        print(result[0][2]) # Link
         #print(result[0][3])
         message = result[0][2]
     con.close()
@@ -155,3 +155,29 @@ def deleteimage(imagename):
     con.commit()
     con.close()
     return message
+
+def getImageList():
+    con = sqlite3.connect('ImageStorage.db')
+    cur = con.cursor()
+    executeString = 'SELECT * FROM ImageStorage'
+    # print(executeString)
+    cur.execute(executeString)
+    result = cur.fetchall()
+    # print('The result len is'+str(len(result)))
+    if (len(result) == 0):
+        # print('no dota id regiester')
+        message='Nothing is in the database '
+    else:
+        embed = discord.Embed(title="Image List", description=" ", color=0xda0b0b)
+        for x in result:
+            print(x[1])
+
+            embed.add_field(name=x[1],value='\u200b',inline=True)
+        #print(result)
+        #print(result[0][0])
+        #print(result[0][1])
+        #print(result[0][2])
+        #print(result[0][3])
+        message = result[0][2]
+    con.close()
+    return embed

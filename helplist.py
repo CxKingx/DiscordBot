@@ -39,3 +39,11 @@ def normalCommands():
   embed.add_field(name="should i listen to argo?", value="burmese detected opinion rejected", inline=True)
   embed.add_field(name="do i party with ritsu", value="Don\'t, you will lose mmr", inline=True)
   return embed
+
+def databaseCommands():
+  embed = discord.Embed(title="Database Commands", description=" ", color=0x0000FF)
+  embed.add_field(name="^save imagename imagelink", value="save the requested image", inline=True)
+  embed.add_field(name="^get imagename ", value="get the requested image", inline=True)
+  embed.add_field(name="^delete imagename", value="save the requested image", inline=True)
+  embed.add_field(name="^imglist", value="get list of image names saved in the bot", inline=True)
+  return embed
