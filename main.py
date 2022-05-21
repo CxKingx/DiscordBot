@@ -122,6 +122,7 @@ async def on_message(message):
             userTotal=0
         return
     print(message)
+
     if split_message[0] == 'delmsg':
         await message.delete()
         original = await message.channel.fetch_message(split_message[1])
@@ -550,6 +551,9 @@ async def on_message(message):
 
     if 'who asked' in user_message or any(x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message:
         await message.reply('I did')
+        return
+    if ('aye fr' in user_message.lower()) or ('ayefr' in user_message.lower()):
+        await message.reply('Thats Crazy bro')
         return
 
     if user_message.lower() == 'do i party with ritsu':
