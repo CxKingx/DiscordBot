@@ -14,7 +14,7 @@ from apifunction import WaifuPic
 from ReactionsFunction import WaitReaction
 
 # my_secret = os.environ['DISCORD_TOKEN']
-
+#a
 con = sqlite3.connect('DrazzBot.db')
 cur = con.cursor()
 cur.execute(
