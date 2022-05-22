@@ -13,7 +13,8 @@ from helplist import functionlist, weeblist, normalCommands
 from apifunction import WaifuPic
 from ReactionsFunction import WaitReaction
 
-# my_secret = os.environ['DISCORD_TOKEN']
+my_secret = os.environ['DISCORD_TOKEN']
+#print(my_secret)
 #a
 con = sqlite3.connect('DrazzBot.db')
 cur = con.cursor()
@@ -49,9 +50,14 @@ con.close()
 # client = discord.Client()
 bot = commands.Bot(command_prefix='^')
 waifuPic = WaifuPic()
-@bot.command
+@bot.event
 async def on_ready():
-    print('We have logged in as  {0.user}'.format(client))
+    print('We have logged in as  {0.user}'.format(bot))
+    #print('alo')
+
+# For normal response like aye fr, who asked, hello bye fuck you something like that
+
+
 ## Not sure if we want to use ^ on this
 @bot.command(name = 'hello' , help =  'Hello')
 async def say_hello(ctx):
@@ -105,7 +111,7 @@ async def otsukare(ctx):
 @bot.command(name = 'bite' , help =  'To give a bite image')
 async def bite(ctx
             , message : str):
-    image = waifupic.fetchanimubite()
+    image = WaifuPic.fetchanimubite()
     
     title_msg = ctx.author + " bite " + message
     embedVar = discord.Embed(description = title_msg, color=0x00ff00)
@@ -613,6 +619,26 @@ async def bite(ctx
 #     if user_message.lower() == '^testconnect':
 #         message_channel = message.author.voice.channel
 #         await message_channel.connect()
+@bot.event
+async def on_message(message):
+    username = str(message.author).split('#')[0]
+    user_message = str(message.content)
+    split_message = user_message.split()
+    channel = str(message.channel.name)
+    channelID = str(message.channel.id)
+    channel_nsfw = message.channel.is_nsfw()
 
+    #if message.author == bot.user:
+        #return
+    if user_message.lower() == 'hello':
+        await message.channel.send(f'Hello {username}!')
+        #return
+        await bot.process_commands(message)
+    elif user_message.lower() == 'bye':
+        await message.channel.send(f'See you later {username}!')
+        await bot.process_commands(message)
+        #return
+
+    await bot.process_commands(message)
 bot.run(my_secret)
 # client.run(my_secret)
