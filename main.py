@@ -584,6 +584,11 @@ async def on_message(message):
     if user_message.lower() == '^testconnect':
         message_channel = message.author.voice.channel
         await message_channel.connect()
-
+    if user_message.lower() == '^disconnect':
+        if (message.guild.voice_client): # If the bot is in a voice channel
+            await message.guild.voice_client.disconnect() # Leave the channel
+            await message.channel.send('Bot left')
+        else: # But if it isn't
+            await message.channel.send("I'm not in a voice channel, use the join command to make me join")
 
 client.run(my_secret)
