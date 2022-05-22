@@ -3,6 +3,22 @@ import sqlite3
 import discord
 import validators
 
+def CreateDatabases():
+    con = sqlite3.connect('DrazzBot.db')
+    cur = con.cursor()
+    cur.execute(
+        '''CREATE TABLE IF NOT EXISTS DotaID (id integer PRIMARY KEY AUTOINCREMENT , DiscordID , MainID , SmurfID)''')
+    con.commit()
+    con.close()
+    print('created database DrazzBot')
+    con = sqlite3.connect('ImageStorage.db')
+    cur = con.cursor()
+    cur.execute(
+        '''CREATE TABLE IF NOT EXISTS ImageStorage (id integer PRIMARY KEY AUTOINCREMENT , imageName , imageLink)''')
+    con.commit()
+    con.close()
+    print('created database ImageStorage')
+    return
 
 def getDotaID(discordID):
     # print('GetDotaID')

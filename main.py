@@ -8,54 +8,43 @@ import requests
 # import youtube_dl
 import sqlite3
 # Test From Pycharm
-from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage
+from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage ,CreateDatabases
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import WaifuPic
 from ReactionsFunction import WaitReaction
 
+# Secret Discord Token
 my_secret = os.environ['DISCORD_TOKEN']
 #print(my_secret)
-#a
-con = sqlite3.connect('DrazzBot.db')
-cur = con.cursor()
-cur.execute(
-    '''CREATE TABLE IF NOT EXISTS DotaID (id integer PRIMARY KEY AUTOINCREMENT , DiscordID , MainID , SmurfID)''')
-con.commit()
-con.close()
-
-con = sqlite3.connect('ImageStorage.db')
-cur = con.cursor()
-cur.execute(
-    '''CREATE TABLE IF NOT EXISTS ImageStorage (id integer PRIMARY KEY AUTOINCREMENT , imageName , imageLink)''')
-con.commit()
-con.close()
-# DiscordID="241817188665786369"
-# Main='195476844'
-# smrf='183110040'
-# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',[DiscordID,Main,smrf])
-#
-# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['241817188665786369','195476844','183110040'])
-# someone
-# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['211728160834846720','258376469','none'])
-# shuri
-# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['354350188170575872','pepega shuri','smurf who?'])
-# typhoon
-# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['188565992274788352','typhoon main','typhoon smurf'])
-# thisbe
-# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['360783668169670656','thibse main','thisbe smurf'])
-# trepi
-# cur.execute('''INSERT INTO DotaID ( DiscordID, MainID ,SmurfID) VALUES(?,?,?)''',['294487555267756032','95353172','none'])
 
 
 # client = discord.Client()
 bot = commands.Bot(command_prefix='^')
 waifuPic = WaifuPic()
+CreateDatabases()
 @bot.event
 async def on_ready():
     print('We have logged in as  {0.user}'.format(bot))
     #print('alo')
 
-# For normal response like aye fr, who asked, hello bye fuck you something like that
+
+@bot.command(name = 'test' , help =  'Hello')
+async def test(ctx, message : str):
+    print(ctx)
+    print(str(ctx))
+    print(message)
+    await ctx.send(f'Hello {ctx.message.author.name}!')
+
+@bot.command()
+async def args(ctx, *args):
+    response = ""
+    for arg in args:
+        response = response + " " + arg
+
+        # SENDS A MESSAGE TO THE CHANNEL USING THE CONTEXT OBJECT.
+    await ctx.channel.send(response)
+    await ctx.channel.send(len(args))
+    await ctx.channel.send(args[0])
 
 
 ## Not sure if we want to use ^ on this
@@ -111,9 +100,9 @@ async def otsukare(ctx):
 @bot.command(name = 'bite' , help =  'To give a bite image')
 async def bite(ctx
             , message : str):
-    image = WaifuPic.fetchanimubite()
+    image = waifuPic.fetchanimubite()
     
-    title_msg = ctx.author + " bite " + message
+    title_msg = str(ctx.author.name) + " bite " + message
     embedVar = discord.Embed(description = title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
@@ -619,6 +608,17 @@ async def bite(ctx
 #     if user_message.lower() == '^testconnect':
 #         message_channel = message.author.voice.channel
 #         await message_channel.connect()
+
+# For normal response like aye fr, who asked, hello bye fuck you something like that
+@bot.event
+async def on_member_leave(member):
+    print("Noob have left the server")
+    #await bot.send_message(member, "Welcome!")
+
+@bot.event
+async def on_member_join(member):
+    #await bot.send_message(member,"Welcome!")
+    print('asd')
 @bot.event
 async def on_message(message):
     username = str(message.author).split('#')[0]
@@ -633,11 +633,16 @@ async def on_message(message):
     if user_message.lower() == 'hello':
         await message.channel.send(f'Hello {username}!')
         #return
-        await bot.process_commands(message)
-    elif user_message.lower() == 'bye':
+        #await bot.process_commands(message)
+    if user_message.lower() == 'bye':
         await message.channel.send(f'See you later {username}!')
-        await bot.process_commands(message)
+        #await bot.process_commands(message)
         #return
+        # Dont reveal this one to the server or its gonna be chaos
+    if split_message[0] == '|':
+        splitmsg = user_message.split("|")
+        await message.delete()
+        await message.channel.send(splitmsg[1])
 
     await bot.process_commands(message)
 bot.run(my_secret)
