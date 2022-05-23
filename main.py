@@ -2,6 +2,7 @@ import asyncio
 import os
 import discord
 from discord.ext import commands
+
 # import validators
 import random
 import requests
@@ -31,6 +32,14 @@ CreateDatabases()
 async def on_ready():
     print('We have logged in as  {0.user}'.format(bot))
     # print('alo')
+
+
+tree = commands.CommandTree(bot)
+
+
+@tree.command( name='tester', description='testing')  # guild specific slash command
+async def slash2(interaction: discord.Interaction):
+    await interaction.response.send_message(f"I am working! I was made with Discord.py!", ephemeral=True)
 
 
 @bot.command(name='test', help='Hello')
@@ -115,7 +124,7 @@ async def askchance(ctx, *args):
     await ctx.send(chancefunc.askchance())
 
 
-@bot.command(name='choose', help='Choose from your given options')
+@bot.command(name='choose', help='Choose from your given options ^choose a;b;c;d;e;f')
 async def ChooseChoices(ctx, *args):
     if len(args) > 1:
         ctx.send('arguments are wrong, please use ^choose a;b;c;d')
@@ -127,90 +136,90 @@ async def ChooseChoices(ctx, *args):
 
 
 @bot.command(name='bite', help='Bite Someone')
-async def bite(ctx, message: str):
+async def bite(ctx, user: str):
     image = waifuPic.fetchanimubite()
-    title_msg = str(ctx.author.name) + " bite " + message
+    title_msg = str(ctx.author.name) + " bite " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='bonk', help='Bonk someone')
-async def bonk(ctx, message: str):
+async def bonk(ctx, user: str):
     image = waifuPic.fetchanimubonk()
-    title_msg = str(ctx.author.name) + " bonked " + message
+    title_msg = str(ctx.author.name) + " bonked " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='pat', help='Pat someone')
-async def pat(ctx, message: str):
+async def pat(ctx, user: str):
     image = waifuPic.fetchanimupat()
-    title_msg = str(ctx.author.name) + " patted " + message
+    title_msg = str(ctx.author.name) + " patted " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='yeet', help='Yeet someone')
-async def yeet(ctx, message: str):
+async def yeet(ctx, user: str):
     image = waifuPic.fetchanimuyeet()
-    title_msg = str(ctx.author.name) + " yeeted " + message
+    title_msg = str(ctx.author.name) + " yeeted " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='kiss', help='Kiss someone')
-async def kiss(ctx, message: str):
+async def kiss(ctx, user: str):
     image = waifuPic.fetchanimukiss()
-    title_msg = str(ctx.author.name) + " kissed " + message
+    title_msg = str(ctx.author.name) + " kissed " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='slap', help='Slap someone')
-async def slap(ctx, message: str):
+async def slap(ctx, user: str):
     image = waifuPic.fetchanimuslap()
-    title_msg = str(ctx.author.name) + " slapped " + message
+    title_msg = str(ctx.author.name) + " slapped " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='cuddle', help='Cuddle someone')
-async def cuddle(ctx, message: str):
+async def cuddle(ctx, user: str):
     image = waifuPic.fetchanimucuddle()
-    title_msg = str(ctx.author.name) + " cuddled " + message
+    title_msg = str(ctx.author.name) + " cuddled " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='hug', help='Hug someone')
-async def bonk(ctx, message: str):
+async def hug(ctx, user: str):
     image = waifuPic.fetchanimuhug()
-    title_msg = str(ctx.author.name) + " hugged " + message
+    title_msg = str(ctx.author.name) + " hugged " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='punch', help='Punch someone')
-async def bonk(ctx, message: str):
+async def punch(ctx, user: str):
     image = waifuPic.fetchanimupunch()
-    title_msg = str(ctx.author.name) + " punched " + message
+    title_msg = str(ctx.author.name) + " punched " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
 
 @bot.command(name='hi5', help='Hi5 someone')
-async def bonk(ctx, message: str):
+async def hi5(ctx, user: str):
     image = waifuPic.fetchanimuhi5()
-    title_msg = str(ctx.author.name) + " hi-5 " + message
+    title_msg = str(ctx.author.name) + " hi-5 " + user
     embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
@@ -247,11 +256,13 @@ async def neko(ctx):
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
+
 def checkNSFW(ctx):
     if ctx.channel.is_nsfw():
         return True
     else:
         return False
+
 
 @bot.command(name='nekoh', help='Gives neko hentai Image')
 async def neko(ctx):
@@ -260,8 +271,9 @@ async def neko(ctx):
         embedVar = discord.Embed(description="Neko Nyaaaa", color=0x00ff00)
         embedVar.set_image(url=list(image.values())[0])
         await ctx.send(embed=embedVar)
-    else :
+    else:
         await ctx.send('Please use dis command in a NSFW Channel')
+
 
 @bot.command(name='hentai', help='Gives hentai Image1')
 async def hentai1(ctx):
@@ -270,8 +282,9 @@ async def hentai1(ctx):
         embedVar = discord.Embed(description="kimochiii...  <:booba:846383152838082571>", color=0x00ff00)
         embedVar.set_image(url=list(image.values())[0])
         await ctx.send(embed=embedVar)
-    else :
+    else:
         await ctx.send('Please use dis command in a NSFW Channel')
+
 
 @bot.command(name='hentai2', help='Gives hentai Image1')
 async def hentai2(ctx):
@@ -280,8 +293,9 @@ async def hentai2(ctx):
         embedVar = discord.Embed(description="kimochiii...  <:booba:846383152838082571>", color=0x00ff00)
         embedVar.set_image(url=list(image.values())[0])
         await ctx.send(embed=embedVar)
-    else :
+    else:
         await ctx.send('Please use dis command in a NSFW Channel')
+
 
 @bot.command(name='trap', help='Gives Trap Hentai Image')
 async def trap(ctx):
@@ -290,8 +304,9 @@ async def trap(ctx):
         embedVar = discord.Embed(description="kimochiii...  <:booba:846383152838082571>", color=0x00ff00)
         embedVar.set_image(url=list(image.values())[0])
         await ctx.send(embed=embedVar)
-    else :
+    else:
         await ctx.send('Please use dis command in a NSFW Channel')
+
 
 @bot.command(name='boob', help='Gives Boob Hentai Image')
 async def trap(ctx):
@@ -300,8 +315,9 @@ async def trap(ctx):
         embedVar = discord.Embed(description="Booba...  <:booba:846383152838082571>", color=0x00ff00)
         embedVar.set_image(url=list(image.values())[0])
         await ctx.send(embed=embedVar)
-    else :
+    else:
         await ctx.send('Please use dis command in a NSFW Channel')
+
 
 # @bot.command(name = 'id', help = 'Get the user Dota2 ID')
 # async def get_id(ctx):
