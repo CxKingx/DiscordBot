@@ -10,8 +10,9 @@ import requests
 import sqlite3
 # Test From Pycharm
 from ChanceFunctions import ChanceFunc
-from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage, \
-    CreateDatabases
+# from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage, \
+# CreateDatabases
+from DatabaseFunctions import DatabaseFunctions
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import WaifuPic
 from ReactionsFunction import WaitReaction
@@ -25,7 +26,7 @@ my_secret = os.environ['DISCORD_TOKEN']
 bot = commands.Bot(command_prefix='^', intents=discord.Intents.all())
 waifuPic = WaifuPic()
 chancefunc = ChanceFunc()
-CreateDatabases()
+dbObject = DatabaseFunctions()
 
 
 @bot.event
@@ -34,13 +35,13 @@ async def on_ready():
     # print('alo')
 
 
-tree = commands.CommandTree(bot)
+# tree = commands.CommandTree(bot)
 
 
-@tree.command( name='tester', description='testing')  # guild specific slash command
-async def slash2(interaction: discord.Interaction):
-    await interaction.response.send_message(f"I am working! I was made with Discord.py!", ephemeral=True)
-
+# @tree.command( name='tester', description='testing')  # guild specific slash command
+# async def slash2(interaction: discord.Interaction):
+#     await interaction.response.send_message(f"I am working! I was made with Discord.py!", ephemeral=True)
+#
 
 @bot.command(name='test', help='Hello')
 async def test(ctx, message: str):
@@ -318,6 +319,74 @@ async def trap(ctx):
     else:
         await ctx.send('Please use dis command in a NSFW Channel')
 
+
+# dbObject
+
+@bot.command(name='id', help='Gives Get Dota IDs')
+async def getID(ctx, user: discord.Member = None):
+    if user:
+        embedVar = dbObject.getDotaID(user.id)
+        await ctx.send(embed=embedVar)
+    else:  # not mention get self
+        embedVar2 = dbObject.getDotaID(ctx.author.id)
+        await ctx.send(embed=embedVar2)
+
+
+@bot.command(name='register', help='Register Dota IDs \n ^register main/smurf DotaID')
+async def registerID(ctx, *args):
+    if len(args) == 2:
+        if args[0] == 'main' or args[0] == 'smurf':
+            embedVar = dbObject.registerDotaID(ctx.author.id, args[0], args[1])
+            await ctx.channel.send(embed=embedVar)
+        else:
+            await ctx.channel.send('Wrong syntax, please give "^register main/smurf DotaID"')
+    else:
+        await ctx.channel.send('Wrong syntax, please give "^register main/smurf DotaID"')
+
+
+@bot.command(name='forceregister', help='Register Dota IDs(Can only be done by CxKingx')
+async def registerID(ctx, *args):
+    print(args)
+    if len(args) == 3 and ctx.author.id ==241817188665786369:
+        if args[1] == 'main' or args[1] == 'smurf':
+            embedVar = dbObject.registerDotaID(ctx.author.id, args[1], args[2])
+            await ctx.channel.send(embed=embedVar)
+        else:
+            await ctx.channel.send('Wrong syntax, please give "^register main/smurf DotaID"')
+    else:
+        await ctx.channel.send('Only <@!241817188665786369> can use this')
+
+@bot.command(name='deleteid', help='Delete Dota IDs(Can only be done by CxKingx')
+async def DeleteID(ctx, *args):
+    print(args)
+    if len(args) == 1 and ctx.author.id ==241817188665786369:
+        embedVar = dbObject.deleteDotaID(args[0])
+        await ctx.channel.send(embed=embedVar)
+    else:
+        await ctx.channel.send('Only <@!241817188665786369> can use this')
+
+@bot.command(name='get', help='Get Image')
+async def getImage(ctx, ImageName):
+    imagemessage = dbObject.getImage(ImageName)
+    await ctx.channel.send(imagemessage)
+
+@bot.command(name='delete', help='Delete Image')
+async def getImage(ctx, ImageName):
+    imagemessage = dbObject.deleteimage(ImageName)
+    await ctx.channel.send(imagemessage)
+
+@bot.command(name='imglist', help='Get Image')
+async def imageList(ctx):
+    embedVar = dbObject.getImageList()
+    await ctx.channel.send(embed=embedVar)
+
+@bot.command(name='save', help='Get Image')
+async def imageList(ctx,*args):
+    if len(args)==2:
+        savestatus =dbObject.registerImage(args[0], args[1])
+        await ctx.channel.send(savestatus)
+    else:
+        await ctx.channel.send('Wrong Syntax, please use ^save imgname imglink')
 
 # @bot.command(name = 'id', help = 'Get the user Dota2 ID')
 # async def get_id(ctx):
