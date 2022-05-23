@@ -8,32 +8,38 @@ import requests
 # import youtube_dl
 import sqlite3
 # Test From Pycharm
-from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage ,CreateDatabases
+from ChanceFunctions import ChanceFunc
+from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage, \
+    CreateDatabases
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import WaifuPic
 from ReactionsFunction import WaitReaction
 
 # Secret Discord Token
 my_secret = os.environ['DISCORD_TOKEN']
-#print(my_secret)
+# print(my_secret)
 
 
 # client = discord.Client()
-bot = commands.Bot(command_prefix='^')
+bot = commands.Bot(command_prefix='^', intents=discord.Intents.all())
 waifuPic = WaifuPic()
+chancefunc = ChanceFunc()
 CreateDatabases()
+
+
 @bot.event
 async def on_ready():
     print('We have logged in as  {0.user}'.format(bot))
-    #print('alo')
+    # print('alo')
 
 
-@bot.command(name = 'test' , help =  'Hello')
-async def test(ctx, message : str):
+@bot.command(name='test', help='Hello')
+async def test(ctx, message: str):
     print(ctx)
     print(str(ctx))
     print(message)
     await ctx.send(f'Hello {ctx.message.author.name}!')
+
 
 @bot.command()
 async def args(ctx, *args):
@@ -48,65 +54,94 @@ async def args(ctx, *args):
 
 
 ## Not sure if we want to use ^ on this
-@bot.command(name = 'hello' , help =  'Hello')
+@bot.command(name='hello', help='Hello')
 async def say_hello(ctx):
     await ctx.send(f'Hello {ctx.message.author.name}!')
+
+
 ## Not sure if we want to use ^ on this
-@bot.command(name = 'bye' , help =  'Bye')
+@bot.command(name='bye', help='Bye')
 async def say_bye(ctx):
     await ctx.send(f'See you later {ctx.message.author.name}!')
 
-@bot.command(name = 'random' , help =  'Random number Generator')
+
+@bot.command(name='random', help='Random number Generator')
 async def rdm_number(ctx):
     await ctx.send(f'This is ur random number: {random.randrange(10000)}')
 
 
 ## Not sure if we want to use ^ on this
-@bot.command(name = 'morning' , help =  'Good Morning List')
+@bot.command(name='morning', help='Good Morning List')
 async def morning(ctx):
     morning_messages = ["Good Morning", "おはようございます", "Selamat Pagi", "Pagi Anjeng", "Pagi Cuk"]
     random_num = random.randrange(len(morning_messages))
-    await ctx.send('{} {}'.format(morning_messages[random_num] , ctx.author.mention ) )
+    await ctx.send('{} {}'.format(morning_messages[random_num], ctx.author.mention))
 
-@bot.command(name = 'ohayo' , help =  'Ohaiyo List')
+
+@bot.command(name='ohayo', help='Ohaiyo List')
 async def ohayo(ctx):
-    ohaiyo_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu", 
-                             "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
-                             "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
-                             "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
-                             "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
-                             "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
-                             "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
+    ohaiyo_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
+                       "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
+                       "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
+                       "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
+                       "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
+                       "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
+                       "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
     random_num = random.randrange(len(ohaiyo_messages))
-    await ctx.send('{} {}'.format(ohaiyo_messages[random_num] , ctx.author.mention ) )
+    await ctx.send('{} {}'.format(ohaiyo_messages[random_num], ctx.author.mention))
 
-@bot.command(name = 'otsukare' , help =  'Otsukare List')
+
+@bot.command(name='otsukare', help='Otsukare List')
 async def otsukare(ctx):
-    otsukare_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu", 
-                             "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
-                             "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
-                             "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
-                             "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
-                             "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
-                             "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
+    otsukare_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
+                         "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
+                         "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
+                         "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
+                         "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
+                         "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
+                         "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
     random_num = random.randrange(len(otsukare_messages))
-    await ctx.send('{} {}'.format(otsukare_messages[random_num] , ctx.author.mention ) )
+    await ctx.send('{} {}'.format(otsukare_messages[random_num], ctx.author.mention))
 
 
+@bot.command(name='askchance', help='Ask a chance of something happening')
+async def askchance(ctx, *args):
+    message = " ".join(args)
+    print(" ".join(args))
+    #print('msg is ' + message)
+    chancefunc.setMessage(message)
+
+    print('newmsg is'+ str(chancefunc.getMessage()))
+    await ctx.send(chancefunc.askchance())
+
+@bot.command(name='choose', help='Choose from your given options')
+async def ChooseChoices(ctx, *args):
+    if len(args)>1:
+        ctx.send('arguments are wrong, please use ^choose a;b;c;d')
+    else:
+        message = " ".join(args)
+        chancefunc.setMessage(message)
+        print('newmsg is'+ str(chancefunc.getMessage()))
+        await ctx.send(embed = chancefunc.choosechoices())
+# if (split_message[0] == '^askchance'):
+#         chancestring = chancefunc.askchance()
+#         await message.channel.send(chancestring)
+
+#     if (split_message[0] == '^choose'):
+#         embedVar = chancefunc.choosechoices()
+#         await message.channel.send(embed=embedVar)
+#         return
 
 
-
-
-@bot.command(name = 'bite' , help =  'To give a bite image')
+@bot.command(name='bite', help='To give a bite image')
 async def bite(ctx
-            , message : str):
+               , message: str):
     image = waifuPic.fetchanimubite()
-    
+
     title_msg = str(ctx.author.name) + " bite " + message
-    embedVar = discord.Embed(description = title_msg, color=0x00ff00)
+    embedVar = discord.Embed(description=title_msg, color=0x00ff00)
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
-
 
     # if split_message[0] == '^bite':
     #     if (len(split_message[1]) != 0):
@@ -118,7 +153,6 @@ async def bite(ctx
     #         return
 
 
-
 # @bot.command(name = 'id', help = 'Get the user Dota2 ID')
 # async def get_id(ctx):
 #     discord_id = ctx.guild.members
@@ -127,19 +161,46 @@ async def bite(ctx
 #         await ctx.send(embed=embedVar2)
 #     else:
 #         await ctx.send(embed=embedVar)
-        # await message.channel.send(embed=embedVar)
+# await message.channel.send(embed=embedVar)
 
 
+# if message.mentions:
+#     embedVar2 = getDotaID(message.mentions[0].id)
+#     await message.channel.send(embed=embedVar2)
+#     return
+# else:
+#     embedVar = getDotaID(message.author.id)
+#     await message.channel.send(embed=embedVar)
+#     return
+
+# Kind of Dangerous cuz the bot have admin so can give practically any roles
+@bot.command(name='giverole', pass_context=True)
+async def giverole(ctx, user: discord.Member, role: discord.Role):
+    await user.add_roles(role)
+    # await ctx.send(f"hey {ctx.author.name}, {user.name} has been giving a role called: {role.name}")
 
 
-    # if message.mentions:
-    #     embedVar2 = getDotaID(message.mentions[0].id)
-    #     await message.channel.send(embed=embedVar2)
-    #     return
-    # else:
-    #     embedVar = getDotaID(message.author.id)
-    #     await message.channel.send(embed=embedVar)
-    #     return
+@bot.command(name='removerole', pass_context=True)
+async def giverole(ctx, user: discord.Member, role: discord.Role):
+    await user.remove_roles(role)
+    # await ctx.send(f"hey {ctx.author.name}, {user.name} has been remove a role called: {role.name}")
+
+
+# https://stackoverflow.com/questions/48846859/how-to-check-if-a-user-has-provided-an-argument-discord-py
+@bot.command(name='avatar', help='Gets the your avatar / the person\'s avatar you metioned')
+async def avatar(ctx, user: discord.Member = None):
+    # if mentioned
+    if user:
+        print('get avatar ' + str(user))
+        embedVar = discord.Embed(title=user, color=0x00ff00)
+        embedVar.set_image(url=user.avatar_url)
+        await ctx.send(embed=embedVar)
+    else:  # not mention get self
+        print('get avatar ' + str(ctx.author))
+        embedVar2 = discord.Embed(title=ctx.author, color=0x00ff00)
+        embedVar2.set_image(url=ctx.author.avatar_url)
+        await ctx.send(embed=embedVar2)
+
 
 # @client.command(name='avatar',aliases=['Avatar','av'])
 # async def av_cmd(ctx,user:discord.Member):
@@ -149,7 +210,7 @@ async def bite(ctx
 #     )
 #     mbet.set_image(url=)
 
-#kept_message=None
+# kept_message=None
 # userTotal=0
 # @client.event
 # async def on_reaction_remove(reaction,user):
@@ -170,7 +231,6 @@ async def bite(ctx
 #         if userTotal==4:
 #             await reaction.message.channel.send("Que pop ")
 #
-
 
 
 # @client.event
@@ -611,39 +671,58 @@ async def bite(ctx
 
 # For normal response like aye fr, who asked, hello bye fuck you something like that
 @bot.event
-async def on_member_leave(member):
+async def on_member_remove(member):
     print("Noob have left the server")
-    #await bot.send_message(member, "Welcome!")
+    # await bot.send_message(member, "Welcome!")
+    for channel in member.guild.channels:
+        if str(channel) == "Kuul Femili":
+            await channel.send(f"""Bye {member.mention}!""")
+    await member.send('take the L bozo')
+
 
 @bot.event
 async def on_member_join(member):
-    #await bot.send_message(member,"Welcome!")
-    print('asd')
+    print('joining chanel')
+    for channel in member.guild.channels:
+        if str(channel) == "Kuul Femili":
+            await channel.send(f"""Welcome {member.mention}!""")
+    await member.send('Welcome')
+    # await bot.send_message(member,"Welcome!")
+    # print('asd')
+
+
 @bot.event
 async def on_message(message):
     username = str(message.author).split('#')[0]
     user_message = str(message.content)
-    split_message = user_message.split()
-    channel = str(message.channel.name)
-    channelID = str(message.channel.id)
-    channel_nsfw = message.channel.is_nsfw()
+    # split_message = user_message.split()
+    # channel = str(message.channel.name)
+    # channelID = str(message.channel.id)
+    # channel_nsfw = message.channel.is_nsfw()
 
-    #if message.author == bot.user:
-        #return
+    # if message.author == bot.user:
+    # return
     if user_message.lower() == 'hello':
         await message.channel.send(f'Hello {username}!')
-        #return
-        #await bot.process_commands(message)
+        # return
+        # await bot.process_commands(message)
     if user_message.lower() == 'bye':
         await message.channel.send(f'See you later {username}!')
-        #await bot.process_commands(message)
-        #return
-        # Dont reveal this one to the server or its gonna be chaos
-    if split_message[0] == '|':
-        splitmsg = user_message.split("|")
-        await message.delete()
-        await message.channel.send(splitmsg[1])
+        # await bot.process_commands(message)
+        # return
+
+    # Dont reveal this one to the server or its gonna be chaos
+    # Change this to ^remove later but dont reveal dis
+    # try:
+    #     if split_message[0] == '|':
+    #         splitmsg = user_message.split("|")
+    #         await message.delete()
+    #         await message.channel.send(splitmsg[1])
+    # except:
+    #     print("An exception occurred")
 
     await bot.process_commands(message)
+
+
 bot.run(my_secret)
 # client.run(my_secret)

@@ -2,9 +2,17 @@ import discord
 import random
 
 class ChanceFunc:
-    def __init__(self, split_message):
-        self.split_message = split_message
 
+    def __init__(self):
+        self.message = None
+        self.split_message=''
+
+
+    def setMessage(self,Newmessage):
+        self.message = Newmessage
+
+    def getMessage(self):
+        return self.message
 
     def lovecalculator(self):
         embedVar = discord.Embed(title=":heart: Love Compability:heart: ",
@@ -13,18 +21,14 @@ class ChanceFunc:
         return embedVar
 
     def askchance(self):
-        chancestring = ""
-        for x in self.split_message:
-            print(x)
-            if x != '^askchance':
-                chancestring = chancestring + " " + x
-        chancestring = "Chances of" + chancestring + " is " + str(random.randrange(0, 100, 1)) + "%"
+        chancestring = "Chances of " + self.message + " is " + str(random.randrange(0, 100, 1)) + "%"
         print(chancestring)
         return chancestring
 
 
     def choosechoices(self):
-        second_split = self.split_message[1].split(';')
-        randomChoosenum = random.randrange(len(second_split))
-        embedVar = discord.Embed(title="This one ", description=f'{second_split[randomChoosenum]}', color=0x00ff00)
+        self.split_message = self.message.split(';')
+        print(self.split_message)
+        randomChoosenum = random.randrange(len(self.split_message))
+        embedVar = discord.Embed(title="This one ", description=f'{self.split_message[randomChoosenum]}', color=0x00ff00)
         return embedVar
