@@ -518,12 +518,12 @@ async def on_message(message):
         return
 
     fakulist = ['fak u', 'fuck you', 'fak you', 'fuck u']
-    if any(x in user_message.lower() for x in fakulist):
+    if any(x == user_message.lower() for x in fakulist):
         await message.channel.send(f'Well fak u too {username}! ')
         await message.channel.send(f'https://tenor.com/view/kizuna-ai-fuck-you-mad-gif-13724813')
 
     morningTrigger = ['gm', 'morning', 'good morning', 'mornin','ohayo']
-    if any(x in user_message.lower() for x in morningTrigger):
+    if any(x == user_message.lower() for x in morningTrigger):
         greeting_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
                              "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
                              "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
