@@ -542,11 +542,18 @@ async def on_message(message):
                   'https://tenor.com/view/asked-gif-19790611']
 
     if 'who asked' in user_message.lower() or any(x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message.lower():
+        embedVar = dbObject.AddAskCounter(message.author.id)
         await message.reply('I did')
+        await message.channel.send(embed=embedVar)
 
-    if ('aye fr' in user_message.lower()) or ('ayefr' in user_message.lower()):
-        await message.reply('Thats Crazy bro')
-
+    aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','aye','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
+               'fr tho','a fr','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
+               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷'
+               ]
+    if (any(x == user_message for x in aye_list)) or (any(x in user_message.lower() for x in aye_list)):
+        embedVar = dbObject.AddAyeCounter(message.author.id)
+        #await message.reply('Thats Crazy bro')
+        await message.channel.send(embed=embedVar)
     await bot.process_commands(message)
 
 

@@ -23,7 +23,90 @@ class DatabaseFunctions:
         con.commit()
         con.close()
         print('created database ImageStorage')
+
+        con = sqlite3.connect('NPCcounter.db')
+        cur = con.cursor()
+        cur.execute(
+            '''CREATE TABLE IF NOT EXISTS NPCcounter (id integer PRIMARY KEY AUTOINCREMENT , DiscordID , AyeCounter , AskCounter)''')
+        con.commit()
+        con.close()
+        print('created database NPCCounter')
+
         return
+
+    def AddAskCounter(self,discordID):
+        print('adding counter')
+        con = sqlite3.connect('NPCcounter.db')
+        cur = con.cursor()
+        executeString = 'SELECT * FROM NPCcounter WHERE DiscordID ="' + str(discordID) + '"'
+        cur.execute(executeString)
+        result = cur.fetchall()
+        if (len(result) == 0):
+            print('first')
+            embed = discord.Embed(title="First NPC response", color=0xda0b0b)
+            message = '<@!'+str(discordID)+'> has commited who asked 1 time'
+            embed.add_field(name="\u200b", value=message,
+                            inline=False)
+            cur.execute('''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter) VALUES(?,?,?)''',
+                        [str(discordID), '0', '1'])
+            con.commit()
+            con.close()
+            #create and ad
+            return embed
+        else:
+            print('not first')
+            print(result)
+
+            addCounter = int(result[0][3])+1
+            updatestring = "UPDATE NPCcounter SET AskCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
+                discordID) + "'"
+            cur.execute(updatestring)
+            con.commit()
+            con.close()
+
+
+            message = '<@!' + str(discordID) + '> has commited who asked '+str(addCounter)+' times'
+            embed = discord.Embed(description=message, color=0xda0b0b)
+
+            return embed
+
+    def AddAyeCounter(self,discordID):
+        print('adding  AYE counter')
+        con = sqlite3.connect('NPCcounter.db')
+        cur = con.cursor()
+        executeString = 'SELECT * FROM NPCcounter WHERE DiscordID ="' + str(discordID) + '"'
+        cur.execute(executeString)
+        result = cur.fetchall()
+        if (len(result) == 0):
+            print('first')
+            embed = discord.Embed(title="First NPC response", color=0xda0b0b)
+            message = '<@!'+str(discordID)+'> has commited Aye FR 1 time'
+            embed.add_field(name="\u200b", value=message,
+                            inline=False)
+            cur.execute('''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter) VALUES(?,?,?)''',
+                        [str(discordID), '1', '0'])
+            con.commit()
+            con.close()
+            #create and ad
+            return embed
+        else:
+            print('not first')
+            print(result)
+
+            addCounter = int(result[0][2])+1
+            updatestring = "UPDATE NPCcounter SET AyeCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
+                discordID) + "'"
+            cur.execute(updatestring)
+            con.commit()
+            con.close()
+
+
+            message = '<@!' + str(discordID) + '> has commited aye fr '+str(addCounter)+' times'
+            embed = discord.Embed(description=message, color=0xda0b0b)
+
+            return embed
+
+
 
     def getDotaID(self,discordID):
         # print('GetDotaID')
