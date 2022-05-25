@@ -63,8 +63,6 @@ class DatabaseFunctions:
             cur.execute(updatestring)
             con.commit()
             con.close()
-
-
             message = '<@!' + str(discordID) + '> has commited who asked '+str(addCounter)+' times'
             embed = discord.Embed(description=message, color=0xda0b0b)
 
@@ -104,6 +102,26 @@ class DatabaseFunctions:
             message = '<@!' + str(discordID) + '> has commited aye fr '+str(addCounter)+' times'
             embed = discord.Embed(description=message, color=0xda0b0b)
 
+            return embed
+
+    def GetNPCCounter(self,discordID):
+        print('Get NPC counter')
+        con = sqlite3.connect('NPCcounter.db')
+        cur = con.cursor()
+        executeString = 'SELECT * FROM NPCcounter WHERE DiscordID ="' + str(discordID) + '"'
+        cur.execute(executeString)
+        result = cur.fetchall()
+        if (len(result) == 0):
+            message = '<@!' + str(discordID) + '> has not commited a NPC response '
+            embed = discord.Embed(description=message, color=0xda0b0b)
+            return embed
+        else:
+            message = '<@!' + str(discordID) + '> NPC Responses Counter'
+            embed = discord.Embed(description=message, color=0xda0b0b)
+            message2='Who Asked '+result[0][3]+' times'
+            message3='aye fr '+result[0][2]+' times'
+            embed.add_field(name=message2, value='\u200b', inline=False)
+            embed.add_field(name=message3, value='\u200b', inline=False)
             return embed
 
 

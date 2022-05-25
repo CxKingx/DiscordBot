@@ -442,10 +442,17 @@ async def avatar(ctx, user: discord.Member = None):
         embedVar2.set_image(url=ctx.author.avatar_url)
         await ctx.send(embed=embedVar2)
 
+@bot.command(name='check', help='Check someones NPC response')
+async def NPC(ctx, user: discord.Member = None):
+    if user:
+        embedVar = dbObject.GetNPCCounter(user.id)
+        await ctx.send(embed=embedVar)
+    else:
+        embedVar = dbObject.GetNPCCounter(ctx.author.id)
+        await ctx.send(embed=embedVar)
 
 
-
-# For normal response like aye fr, who asked, hello bye fuck you something like that
+    # For normal response like aye fr, who asked, hello bye fuck you something like that
 @bot.event
 async def on_member_remove(member):
     print(member)
@@ -546,12 +553,13 @@ async def on_message(message):
         embedVar = dbObject.AddAskCounter(message.author.id)
         await message.reply('I did')
         await message.channel.send(embed=embedVar)
-
-    aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','aye','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
+#a
+    aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
                'fr tho','a fr','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
-               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷'
+               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real'
+               'https://tenor.com/view/fr-fr-ong-gif-24732056'
                ]
-    if (any(x == user_message for x in aye_list)) or (any(x in user_message.lower() for x in aye_list)):
+    if (any(x == user_message for x in aye_list)) or (any(x in user_message.lower() for x in aye_list))or user_message.lower()=='aye':
         embedVar = dbObject.AddAyeCounter(message.author.id)
         #await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
