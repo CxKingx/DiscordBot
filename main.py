@@ -515,7 +515,7 @@ async def on_message(message):
 
 
     NightTrigger = ['bye', 'good night', 'gn', '<:bedge:906981474916507739>', 'oyasumi','otsukare']
-    if any(x in user_message.lower() for x in NightTrigger):
+    if any(x == user_message.lower() for x in NightTrigger):
         otsukare_messages = ["Otsu-kōn deshita!", "Otsurobo", "OtsuMiko~", "Otsumachi!!", "Otsukapu",
                              "Omatsuriwasshoi!", "Otsuthal", "Otsuruuju!", "otsuaqua!", "Otsuru-n", "Otsunakiri!",
                              "Otsukareito", "Otsubaru", "Otsumion!", "Kanshoku~ Okayu!", "Otsukoron", "Otsupeko",
