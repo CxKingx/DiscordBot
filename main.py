@@ -63,31 +63,9 @@ async def args(ctx, *args):
     await ctx.channel.send(len(args))
     await ctx.channel.send(args[0])
 
-
-## Not sure if we want to use ^ on this
-@bot.command(name='hello', help='Hello')
-async def say_hello(ctx):
-    await ctx.send(f'Hello {ctx.message.author.name}!')
-
-
-## Not sure if we want to use ^ on this
-@bot.command(name='bye', help='Bye')
-async def say_bye(ctx):
-    await ctx.send(f'See you later {ctx.message.author.name}!')
-
-
 @bot.command(name='random', help='Random number Generator')
 async def rdm_number(ctx):
     await ctx.send(f'This is ur random number: {random.randrange(10000)}')
-
-
-## Not sure if we want to use ^ on this
-@bot.command(name='morning', help='Good Morning List')
-async def morning(ctx):
-    morning_messages = ["Good Morning", "おはようございます", "Selamat Pagi", "Pagi Anjeng", "Pagi Cuk"]
-    random_num = random.randrange(len(morning_messages))
-    await ctx.send('{} {}'.format(morning_messages[random_num], ctx.author.mention))
-
 
 @bot.command(name='ohayo', help='Ohaiyo List')
 async def ohayo(ctx):
