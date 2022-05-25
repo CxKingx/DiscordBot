@@ -134,7 +134,7 @@ async def secret(ctx, *args):
     await ctx.send(message)
 
 #@bot.command(name='delmsg', help='Delete Message using the bot')
-@bot.command(hidden=True)
+@bot.command(name='delmsg' , hidden=True)
 async def delmsg(ctx, messageID):
     await ctx.message.delete()
     original = await ctx.channel.fetch_message(messageID)
@@ -154,10 +154,15 @@ async def ChooseChoices(ctx, *args):
 
 ### Mod Functions
 @bot.command()
-async def timeout(ctx, member: discord.Member, time=None, reason=None):
+async def timeout(ctx, user: discord.Member, time=None, reason=None):
   time = humanfriendly.parse_timespan(time)
-  await member.timeout(until = discord.utils.utcnow() + datetime.timedelta(seconds=time), reason=reason)
-  await ctx.send (f"{member} callate un rato anda {time}")
+  await user.timeout_for(time)
+  #await user.edit(timed_out_until=datetime.timedelta(seconds=time))
+  #await user.timeout(until = discord.utils.utcnow() + datetime.timedelta(seconds=time), reason=reason)
+  await ctx.send (f"{user} Timeouted for {time}")
+
+
+
 ### Mod Function End
 
 ### Animu Section
@@ -320,7 +325,7 @@ async def hentai1(ctx):
         await ctx.send('Please use dis command in a NSFW Channel')
 
 
-@bot.command(name='hentai2', help='Gives hentai Image1')
+@bot.command(name='hentai2', help='Gives hentai Image2')
 async def hentai2(ctx):
     if checkNSFW(ctx):
         image = waifuPic.fetchanimuwaifunsfw()
@@ -403,17 +408,17 @@ async def DeleteID(ctx, *args):
 
 ### Image Database Section
 
-@bot.command(name='get', help='Get Image')
+@bot.command(name='get', help='Get Image' ,Category='Images')
 async def getImage(ctx, ImageName):
     imagemessage = dbObject.getImage(ImageName)
     await ctx.channel.send(imagemessage)
 
-@bot.command(name='delete', help='Delete Image')
+@bot.command(name='delete', help='Delete Image',Category='Images')
 async def deleteImage(ctx, ImageName):
     imagemessage = dbObject.deleteimage(ImageName)
     await ctx.channel.send(imagemessage)
 
-@bot.command(name='imglist', help='Get Image')
+@bot.command(name='imglist', help='Get Image',Category='Images')
 async def imageList(ctx):
     embedVar = dbObject.getImageList()
     await ctx.channel.send(embed=embedVar)
@@ -428,15 +433,18 @@ async def saveImage(ctx,*args):
 
 ### Database Image Section end
 
+
 # Kind of Dangerous cuz the bot have admin so can give practically any roles
-@bot.command(name='giverole', pass_context=True)
+@bot.command(name='giverole', pass_context=True, hidden=True)
 async def giverole(ctx, user: discord.Member, role: discord.Role):
+    await ctx.message.delete()
     await user.add_roles(role)
     # await ctx.send(f"hey {ctx.author.name}, {user.name} has been giving a role called: {role.name}")
 
 
-@bot.command(name='removerole', pass_context=True)
+@bot.command(name='removerole', pass_context=True, hidden=True)
 async def removerole(ctx, user: discord.Member, role: discord.Role):
+    await ctx.message.delete()
     await user.remove_roles(role)
     # await ctx.send(f"hey {ctx.author.name}, {user.name} has been remove a role called: {role.name}")
 
@@ -462,21 +470,35 @@ async def avatar(ctx, user: discord.Member = None):
 # For normal response like aye fr, who asked, hello bye fuck you something like that
 @bot.event
 async def on_member_remove(member):
-    print("Noob have left the server")
-    # await bot.send_message(member, "Welcome!")
-    for channel in member.guild.channels:
-        if str(channel) == "Kuul Femili":
-            await channel.send(f"""Bye {member.mention}!""")
-    await member.send('take the L bozo')
+    print(member)
+    print(member.id)
+    print(member.name+"  have left the server")
+    guild = bot.get_guild(846380741209620480)  # find ID by right clicking on server icon and choosing "copy id" at the bottom
+    if guild.get_member(member.id) is None:  # find ID by right clicking on a user and choosing "copy id" at the bottom
+        channel = bot.get_channel(846380741209620483)
+        await channel.send(f"""{member.name} Has left""")
+    else:
+        print('notih')
+    # the member is not in the server, do something #
+
+    #channel = discord.utils.get(bot.get_all_channels(), guild__name='Drazzers', name='general')
+    #channel=bot.get_channel(846380741209620483)
+    #channel = discord.utils.get(bot.get_all_channels(), guild__name='Kuul Femili', name='berdiskusi')
+    #await channel.send(f"""{member.name} Has left""")
+
+    #await member.send('take the L bozo')
+
 
 
 @bot.event
 async def on_member_join(member):
     print('joining chanel')
-    for channel in member.guild.channels:
-        if str(channel) == "Kuul Femili":
-            await channel.send(f"""Welcome {member.mention}!""")
-    await member.send('Welcome')
+    # channel = discord.utils.get(bot.get_all_channels(), guild__name='Drazzers', name='general')
+    # await channel.send(f"""{member.mention} Hello""")
+    # for channel in member.guild.channels:
+    #     if str(channel) == "Kuul Femili":
+    #         await channel.send(f"""Welcome {member.mention}!""")
+    await member.send('Welcome to the channel, careful of racist people and smoke')
     # await bot.send_message(member,"Welcome!")
     # print('asd')
 
@@ -492,24 +514,60 @@ async def on_message(message):
     print(f'{username}: {user_message} ({channel}) (ID: {channelID})')
     # if message.author == bot.user:
     # return
-    if user_message.lower() == 'hello':
-        await message.channel.send(f'Hello {username}!')
-        # return
-        # await bot.process_commands(message)
-    if user_message.lower() == 'bye':
-        await message.channel.send(f'See you later {username}!')
-        # await bot.process_commands(message)
-        # return
+    if message.author == bot.user:
+        return
 
-    # Dont reveal this one to the server or its gonna be chaos
-    # Change this to ^remove later but dont reveal dis
-    # try:
-    #     if split_message[0] == '|':
-    #         splitmsg = user_message.split("|")
-    #         await message.delete()
-    #         await message.channel.send(splitmsg[1])
-    # except:
-    #     print("An exception occurred")
+    fakulist = ['fak u', 'fuck you', 'fak you', 'fuck u']
+    if any(x in user_message.lower() for x in fakulist):
+        await message.channel.send(f'Well fak u too {username}! ')
+        await message.channel.send(f'https://tenor.com/view/kizuna-ai-fuck-you-mad-gif-13724813')
+
+    morningTrigger = ['gm', 'morning', 'good morning', 'mornin','ohayo']
+    if any(x in user_message.lower() for x in morningTrigger):
+        greeting_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
+                             "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
+                             "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
+                             "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
+                             "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
+                             "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
+                             "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~","Good Morning",
+                             "おはようございます", "Selamat Pagi", "Pagi Anjeng", "Pagi Cuk"]
+        random_num = random.randrange(len(greeting_messages))
+        await message.channel.send(f'{greeting_messages[random_num]} <@{message.author.id}>')
+
+
+    NightTrigger = ['bye', 'good night', 'gn', '<:bedge:906981474916507739>', 'oyasumi','otsukare']
+    if any(x in user_message.lower() for x in NightTrigger):
+        otsukare_messages = ["Otsu-kōn deshita!", "Otsurobo", "OtsuMiko~", "Otsumachi!!", "Otsukapu",
+                             "Omatsuriwasshoi!", "Otsuthal", "Otsuruuju!", "otsuaqua!", "Otsuru-n", "Otsunakiri!",
+                             "Otsukareito", "Otsubaru", "Otsumion!", "Kanshoku~ Okayu!", "Otsukoron", "Otsupeko",
+                             "Otsurushi~", "Otsunui", "Otsukamassuru", "Shukkou", "otsukanata!",
+                             "Good Bye Motherfuckers!", "Otsunomaki ~", "Otsuyappi!", "Otsuluna~", "Otsulamy",
+                             "Mata-nene!", "O tsurai o~n", "Poruka owaru ka", "Bye Bye"]
+
+        random_num = random.randrange(len(otsukare_messages))
+        await message.channel.send(f'{otsukare_messages[random_num]} <@{message.author.id}>')
+
+
+    whoasklist = ['who asked?', 'who asked', 'who asked ?', 'but who asked', 'no one asked your opinion', 'no one asked',
+                  'tell me who asked', 'ok but who asked', 'did i ask','who tf asked','but who tf asked','but no one asked',
+                  'https://tenor.com/view/thats-crazy-fr-hoe-who-asked-gif-21374201',
+                  'https://tenor.com/view/among-us-killer-bean-tf-asked-who-asked-dance-gif-18838836',
+                  'https://tenor.com/view/who-asked-k-on-yui-anime-anime-girl-gif-24260375',
+                  'https://tenor.com/view/who-asked-yo-bro-gif-22344826',
+                  'https://tenor.com/view/travis-scott-travis-who-asked-astroworld-black-and-white-gif-23755809',
+                  'https://tenor.com/view/who-tf-asked-nasas-radar-dish-who-asked-nobody-asked-gif-17675657',
+                  'https://tenor.com/view/who-asked-nobody-asked-nobody-cares-damn-thats-crazy-gif-20130694',
+                  'https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294',
+                  'https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294',
+                  'https://tenor.com/view/bean-dance-crazy-aye-dats-fr-crazy-hoe-now-show-me-one-person-who-asked-gif-16195074',
+                  'https://tenor.com/view/asked-gif-19790611']
+
+    if 'who asked' in user_message.lower() or any(x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message.lower():
+        await message.reply('I did')
+
+    if ('aye fr' in user_message.lower()) or ('ayefr' in user_message.lower()):
+        await message.reply('Thats Crazy bro')
 
     await bot.process_commands(message)
 
