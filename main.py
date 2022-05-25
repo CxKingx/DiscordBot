@@ -529,6 +529,7 @@ async def on_message(message):
 
     whoasklist = ['who asked?', 'who asked', 'who asked ?', 'but who asked', 'no one asked your opinion', 'no one asked',
                   'tell me who asked', 'ok but who asked', 'did i ask','who tf asked','but who tf asked','but no one asked',
+                  'who dafook arsked',
                   'https://tenor.com/view/thats-crazy-fr-hoe-who-asked-gif-21374201',
                   'https://tenor.com/view/among-us-killer-bean-tf-asked-who-asked-dance-gif-18838836',
                   'https://tenor.com/view/who-asked-k-on-yui-anime-anime-girl-gif-24260375',
