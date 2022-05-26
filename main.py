@@ -15,6 +15,7 @@ from ChanceFunctions import ChanceFunc
 # from DatabaseFunctions import getDotaID, registerDotaID, deleteDotaID, registerImage, getImage, deleteimage, \
 # CreateDatabases
 from DatabaseFunctions import DatabaseFunctions
+from DotaQue import QueSystem
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import WaifuPic
 from ReactionsFunction import WaitReaction
@@ -451,6 +452,19 @@ async def NPC(ctx, user: discord.Member = None):
         embedVar = dbObject.GetNPCCounter(ctx.author.id)
         await ctx.send(embed=embedVar)
 
+@bot.command(name='startQ', help='Start a Dota Que')
+async def startQ(ctx):
+    newQue = QueSystem()
+
+    #guild = bot.get_guild(846380741209620480)
+    channel = bot.get_channel(979033486340010015)
+    embedVar = newQue.StartQue()
+    messageID = await channel.send(embed=embedVar)
+    emoji = '<:AYAYA:846389444840128562>'
+    await messageID.add_reaction(emoji)
+    print('message id is '+str(messageID.id))
+    newQue.RegisterMessage(messageID)
+
 
     # For normal response like aye fr, who asked, hello bye fuck you something like that
 @bot.event
@@ -557,7 +571,7 @@ async def on_message(message):
 #a
     aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
                'fr tho','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
-               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real'
+               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real','eye fr'
                'https://tenor.com/view/fr-fr-ong-gif-24732056',
                'https://tenor.com/view/lil-uzi-vert-yeah-aye-fr-tho-for-real-gif-17343447',
 
