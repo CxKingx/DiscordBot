@@ -547,7 +547,8 @@ async def on_message(message):
                   'https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294',
                   'https://tenor.com/view/who-asked-me-trying-to-find-who-asked-spongebob-spunch-bob-gif-22526294',
                   'https://tenor.com/view/bean-dance-crazy-aye-dats-fr-crazy-hoe-now-show-me-one-person-who-asked-gif-16195074',
-                  'https://tenor.com/view/asked-gif-19790611']
+                  'https://tenor.com/view/asked-gif-19790611',
+                  'https://tenor.com/view/thats-crazy-djemilah-djemilah-birnie-crazy-cool-story-bro-gif-19887310']
 
     if 'who asked' in user_message.lower() or any(x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message.lower():
         embedVar = dbObject.AddAskCounter(message.author.id)
@@ -555,9 +556,11 @@ async def on_message(message):
         await message.channel.send(embed=embedVar)
 #a
     aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
-               'fr tho','a fr','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
+               'fr tho','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
                'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real'
-               'https://tenor.com/view/fr-fr-ong-gif-24732056'
+               'https://tenor.com/view/fr-fr-ong-gif-24732056',
+               'https://tenor.com/view/lil-uzi-vert-yeah-aye-fr-tho-for-real-gif-17343447',
+
                ]
     if (any(x == user_message for x in aye_list)) or (any(x in user_message.lower() for x in aye_list))or user_message.lower()=='aye':
         embedVar = dbObject.AddAyeCounter(message.author.id)
