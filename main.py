@@ -571,7 +571,7 @@ async def on_message(message):
 #a
     aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
                'fr tho','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
-               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real','eye fr'
+               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real','eye fr',
                'https://tenor.com/view/fr-fr-ong-gif-24732056',
                'https://tenor.com/view/lil-uzi-vert-yeah-aye-fr-tho-for-real-gif-17343447',
 
