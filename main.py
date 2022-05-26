@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix='^', intents=discord.Intents.all())
 waifuPic = WaifuPic()
 chancefunc = ChanceFunc()
 dbObject = DatabaseFunctions()
-
+newQue = QueSystem()
 
 @bot.event
 async def on_ready():
@@ -452,21 +452,26 @@ async def NPC(ctx, user: discord.Member = None):
         embedVar = dbObject.GetNPCCounter(ctx.author.id)
         await ctx.send(embed=embedVar)
 
-@bot.command(name='startQ', help='Start a Dota Que')
-async def startQ(ctx):
-    newQue = QueSystem()
+# @bot.command(name='startQ', help='Start a Dota Que')
+# async def startQ(ctx):
+#
+#
+#     #guild = bot.get_guild(846380741209620480)
+#     channel = bot.get_channel(979033486340010015)
+#     embedVar = newQue.StartQue()
+#     messageID = await channel.send(embed=embedVar)
+#     emoji = '<:AYAYA:846389444840128562>'
+#     await messageID.add_reaction(emoji)
+#     print('message id is '+str(messageID.id))
+#     newQue.RegisterMessage(messageID)
 
-    #guild = bot.get_guild(846380741209620480)
-    channel = bot.get_channel(979033486340010015)
-    embedVar = newQue.StartQue()
-    messageID = await channel.send(embed=embedVar)
-    emoji = '<:AYAYA:846389444840128562>'
-    await messageID.add_reaction(emoji)
-    print('message id is '+str(messageID.id))
-    newQue.RegisterMessage(messageID)
-
-
-    # For normal response like aye fr, who asked, hello bye fuck you something like that
+# @bot.event
+# async def on_reaction_add(reaction, user):
+#     if user != bot.user:
+#         print('reacted on this mesg id ' + str(reaction.message.id))
+#         print('que msg id is '+str(newQue.messageID))
+#         newQue.AddUser(user.id)
+#     # For normal response like aye fr, who asked, hello bye fuck you something like that
 @bot.event
 async def on_member_remove(member):
     print(member)
@@ -500,6 +505,7 @@ async def on_member_join(member):
     await member.send('Welcome to the channel, careful of racist people and smoke')
     # await bot.send_message(member,"Welcome!")
     # print('asd')
+
 
 
 @bot.event

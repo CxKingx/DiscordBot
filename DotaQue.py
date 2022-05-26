@@ -19,10 +19,14 @@ class QueSystem:
         return
 
     def AddUser(self,UserID):
+        self.CurrentQue.append(str(UserID))
+        print('cur que is ')
+        print(self.CurrentQue)
         return
     def RemoveUser(self,UserID):
         return
     def PopQue(self):
-
+        # Put currentQue to Past Que
+        # send message
         return
 
