@@ -452,26 +452,83 @@ async def NPC(ctx, user: discord.Member = None):
         embedVar = dbObject.GetNPCCounter(ctx.author.id)
         await ctx.send(embed=embedVar)
 
-# @bot.command(name='startQ', help='Start a Dota Que')
-# async def startQ(ctx):
-#
-#
-#     #guild = bot.get_guild(846380741209620480)
-#     channel = bot.get_channel(979033486340010015)
-#     embedVar = newQue.StartQue()
-#     messageID = await channel.send(embed=embedVar)
-#     emoji = '<:AYAYA:846389444840128562>'
-#     await messageID.add_reaction(emoji)
-#     print('message id is '+str(messageID.id))
-#     newQue.RegisterMessage(messageID)
 
-# @bot.event
-# async def on_reaction_add(reaction, user):
-#     if user != bot.user:
-#         print('reacted on this mesg id ' + str(reaction.message.id))
-#         print('que msg id is '+str(newQue.messageID))
-#         newQue.AddUser(user.id)
-#     # For normal response like aye fr, who asked, hello bye fuck you something like that
+
+@bot.command(name='startQ', help='Start a Dota Que')
+async def startQ(ctx):
+    if newQue.QueExist:
+        ctx.send('a que is in session')
+    else:
+        #guild = bot.get_guild(846380741209620480) #846380741209620483 gen 979033486340010015 bot
+        channel = bot.get_channel(979725539243880498)
+
+        embedVar = newQue.StartQue()
+        messageObject = await channel.send(embed=embedVar)
+        emoji = '<:AYAYA:846389444840128562>'
+        await messageObject.add_reaction(emoji)
+
+        print('Que message id is '+str(messageObject.id))
+        newQue.RegisterMessage(messageObject)
+
+@bot.command(name='pingQ', help='Ping the Queres')
+async def pingQ(ctx):
+    remaining_Slot = newQue.QueLimit-len(newQue.CurrentQue)
+    await ctx.send('+'+str(remaining_Slot)+' @queres go to <#979725539243880498> to join the que')
+
+@bot.command(name='getQ', help = 'Get Current Que')
+async def getQ(ctx):
+    embedVar = newQue.GetCurrentQue()
+    await ctx.send(embed=embedVar)
+
+@bot.event
+async def on_reaction_add(reaction, user):
+    # que channel 979725539243880498
+    channel = bot.get_channel(979725539243880498)
+    if user != bot.user:
+        print('reacted on this mesg id ' + str(reaction.message.id))
+        print('que msg id is '+str(newQue.messageObject))
+        if str(reaction.message.id) == str(newQue.messageObject.id):
+            if(newQue.CheckUserInQue(user.id)):
+                print('noithing')
+            else:
+                newQue.AddUser(user.id)
+                if (newQue.CheckPop()):
+                    #embedVar = newQue.EditQueMessage()
+                    #await reaction.message.edit(embed=embedVar)
+                    await reaction.message.delete()
+
+                    await channel.send('Que has popped ,participants are')
+                    await channel.send(newQue.PopQue())
+
+                    newQue.ResetQue()
+                    embedVar = newQue.StartQue()
+                    messageObject = await channel.send(embed=embedVar)
+                    emoji = '<:AYAYA:846389444840128562>'
+                    await messageObject.add_reaction(emoji)
+
+                    print('Que message id is ' + str(messageObject.id))
+                    newQue.RegisterMessage(messageObject)
+
+                else:
+                    embedVar = newQue.EditQueMessage()
+                    await reaction.message.edit(embed=embedVar)
+
+
+    # For normal response like aye fr, who asked, hello bye fuck you something like that
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    guild = bot.get_guild(payload.guild_id)
+    member = guild.get_member(payload.user_id)
+    channel = bot.get_channel(979033486340010015)
+    print('paylod is '+str(payload))
+    if str(payload.message_id) == str(newQue.messageObject.id):
+        newQue.RemoveUser(member)
+        embedVar = newQue.EditQueMessage()
+        print('mesg object is'+ str(newQue.messageObject))
+        await newQue.messageObject.edit(embed=embedVar)
+    #print('remove reaction')
+
 @bot.event
 async def on_member_remove(member):
     print(member)
@@ -556,7 +613,7 @@ async def on_message(message):
 
     whoasklist = ['who asked?', 'who asked', 'who asked ?', 'but who asked', 'no one asked your opinion', 'no one asked',
                   'tell me who asked', 'ok but who asked', 'did i ask','who tf asked','but who tf asked','but no one asked',
-                  'who dafook arsked',
+                  'who dafook arsked','whos askingtho','whos asking'
                   'https://tenor.com/view/thats-crazy-fr-hoe-who-asked-gif-21374201',
                   'https://tenor.com/view/among-us-killer-bean-tf-asked-who-asked-dance-gif-18838836',
                   'https://tenor.com/view/who-asked-k-on-yui-anime-anime-girl-gif-24260375',
@@ -578,6 +635,7 @@ async def on_message(message):
     aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
                'fr tho','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
                'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real','eye fr',
+               'a4 real',
                'https://tenor.com/view/fr-fr-ong-gif-24732056',
                'https://tenor.com/view/lil-uzi-vert-yeah-aye-fr-tho-for-real-gif-17343447',
 
