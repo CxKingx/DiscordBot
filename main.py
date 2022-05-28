@@ -567,7 +567,8 @@ async def on_member_join(member):
     #     if str(channel) == "Kuul Femili":
     #         await channel.send(f"""Welcome {member.mention}!""")
     if member.id==307535807588204544:
-
+        await member.send("Welcome Home Arthur-sama, we and Alice miss you")
+    else:
         await member.send('Welcome to the channel, careful of racist people and smoke')
     # await bot.send_message(member,"Welcome!")
     # print('asd')
