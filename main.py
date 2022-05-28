@@ -452,15 +452,22 @@ async def NPC(ctx, user: discord.Member = None):
         embedVar = dbObject.GetNPCCounter(ctx.author.id)
         await ctx.send(embed=embedVar)
 
-
+@bot.command(name='endQ', help='End a Dota Que')
+async def endQ(ctx):
+    if newQue.QueExist:
+        channel = bot.get_channel(newQue.ChannelID)
+        await newQue.messageObject.delete()
+        newQue.ResetQue()
+    else:
+        await ctx.send('no que to end')
 
 @bot.command(name='startQ', help='Start a Dota Que')
 async def startQ(ctx):
     if newQue.QueExist:
-        ctx.send('a que is in session')
+        await ctx.send('a que is in session , go to <#979725539243880498> to join the que')
     else:
         #guild = bot.get_guild(846380741209620480) #846380741209620483 gen 979033486340010015 bot
-        channel = bot.get_channel(979725539243880498)
+        channel = bot.get_channel(newQue.ChannelID)
 
         embedVar = newQue.StartQue()
         messageObject = await channel.send(embed=embedVar)
@@ -483,7 +490,7 @@ async def getQ(ctx):
 @bot.event
 async def on_reaction_add(reaction, user):
     # que channel 979725539243880498
-    channel = bot.get_channel(979725539243880498)
+    channel = bot.get_channel(newQue.ChannelID)
     if user != bot.user:
         print('reacted on this mesg id ' + str(reaction.message.id))
         print('que msg id is '+str(newQue.messageObject))
@@ -559,7 +566,9 @@ async def on_member_join(member):
     # for channel in member.guild.channels:
     #     if str(channel) == "Kuul Femili":
     #         await channel.send(f"""Welcome {member.mention}!""")
-    await member.send('Welcome to the channel, careful of racist people and smoke')
+    if member.id==307535807588204544:
+
+        await member.send('Welcome to the channel, careful of racist people and smoke')
     # await bot.send_message(member,"Welcome!")
     # print('asd')
 

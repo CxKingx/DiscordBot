@@ -10,11 +10,12 @@ class QueSystem:
         self.PreviousQue = []
         self.messageObject = 0
         self.QueLimit = 10
+        self.ChannelID = 979725539243880498
 
     def StartQue(self):
         print('Starting Que')  # Current Q:
         embedVar = discord.Embed(title="Current Q: ", description='Press the reaction to join ', color=0x00ff00)
-
+        self.QueExist=True
         return embedVar
 
     def RegisterMessage(self, QueMessageID):
@@ -88,6 +89,7 @@ class QueSystem:
         return PopMsg
 
     def ResetQue(self):
+        self.QueExist = False
         self.CurrentQue = []
         self.TimeoutTime = 30
         self.PreviousQue = []
