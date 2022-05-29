@@ -487,6 +487,21 @@ async def getQ(ctx):
     embedVar = newQue.GetCurrentQue()
     await ctx.send(embed=embedVar)
 
+@bot.command(name='refreshQ', help = 'Refresh Current Que')
+async def refreshQ(ctx):
+    await newQue.messageObject.delete()
+    channel = bot.get_channel(newQue.ChannelID)
+
+    #embedVar = newQue.StartQue()
+    embedVar = newQue.EditQueMessage()
+    messageObject = await channel.send(embed=embedVar)
+    emoji = '<:AYAYA:846389444840128562>'
+    await messageObject.add_reaction(emoji)
+
+    print('Que message id is ' + str(messageObject.id))
+    newQue.RegisterMessage(messageObject)
+
+
 @bot.event
 async def on_reaction_add(reaction, user):
     # que channel 979725539243880498
