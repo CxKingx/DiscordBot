@@ -506,13 +506,15 @@ async def refreshQ(ctx):
 async def on_reaction_add(reaction, user):
     # que channel 979725539243880498
     channel = bot.get_channel(newQue.ChannelID)
+    print('reacted on this mesg id ' + str(reaction.message.id))
+    print('que msg id is ' + str(newQue.messageObject))
     if user != bot.user:
-        print('reacted on this mesg id ' + str(reaction.message.id))
-        print('que msg id is '+str(newQue.messageObject))
+        print('its '+user.name)
         if str(reaction.message.id) == str(newQue.messageObject.id):
             if(newQue.CheckUserInQue(user.id)):
                 print('noithing')
             else:
+                print('adding '+user.name+' to Q')
                 newQue.AddUser(user.id)
                 if (newQue.CheckPop()):
                     #embedVar = newQue.EditQueMessage()
@@ -543,11 +545,13 @@ async def on_raw_reaction_remove(payload):
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id)
     channel = bot.get_channel(979033486340010015)
-    print('paylod is '+str(payload))
+    #print('paylod is '+str(payload))
+    print('ReactMSG ID = '+str(payload.message_id)+' QueMSGID= '+str(newQue.messageObject.id) )
     if str(payload.message_id) == str(newQue.messageObject.id):
+        print(newQue.CurrentQue)
         newQue.RemoveUser(member)
         embedVar = newQue.EditQueMessage()
-        print('mesg object is'+ str(newQue.messageObject))
+        #print('mesg object is'+ str(newQue.messageObject))
         await newQue.messageObject.edit(embed=embedVar)
     #print('remove reaction')
 
