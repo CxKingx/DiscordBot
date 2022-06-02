@@ -501,25 +501,25 @@ async def refreshQ(ctx):
     print('Que message id is ' + str(messageObject.id))
     newQue.RegisterMessage(messageObject)
 
-
 @bot.event
-async def on_reaction_add(reaction, user):
-    # que channel 979725539243880498
-    channel = bot.get_channel(newQue.ChannelID)
-    print('reacted on this mesg id ' + str(reaction.message.id))
-    print('que msg id is ' + str(newQue.messageObject))
-    if user != bot.user:
-        print('its '+user.name)
-        if str(reaction.message.id) == str(newQue.messageObject.id):
-            if(newQue.CheckUserInQue(user.id)):
+async def on_raw_reaction_add(payload):
+    print(payload)
+    print(payload.message_id)
+    #print(newQue.messageObject.id)
+    print(payload.member.id)
+    if payload.member.id != bot.user:
+        print('its a usder')
+        if str(payload.message_id) == str(newQue.messageObject.id):
+            if (newQue.CheckUserInQue(payload.user_id)):
                 print('noithing')
             else:
-                print('adding '+user.name+' to Q')
-                newQue.AddUser(user.id)
+                #print('adding ' + payload.nick + ' to Q')
+                newQue.AddUser(payload.user_id)
                 if (newQue.CheckPop()):
-                    #embedVar = newQue.EditQueMessage()
-                    #await reaction.message.edit(embed=embedVar)
-                    await reaction.message.delete()
+                    channel = bot.get_channel(newQue.ChannelID)
+                    # embedVar = newQue.EditQueMessage()
+                    # await reaction.message.edit(embed=embedVar)
+                    await newQue.messageObject.delete()
 
                     await channel.send('Que has popped ,participants are')
                     await channel.send(newQue.PopQue())
@@ -535,7 +535,42 @@ async def on_reaction_add(reaction, user):
 
                 else:
                     embedVar = newQue.EditQueMessage()
-                    await reaction.message.edit(embed=embedVar)
+                    await newQue.messageObject.edit(embed=embedVar)
+
+# @bot.event
+# async def on_reaction_add(reaction, user):
+#     # que channel 979725539243880498
+#     channel = bot.get_channel(newQue.ChannelID)
+#     print('reacted on this mesg id ' + str(reaction.message.id))
+#     print('que msg id is ' + str(newQue.messageObject))
+#     if user != bot.user:
+#         print('its '+user.name)
+#         if str(reaction.message.id) == str(newQue.messageObject.id):
+#             if(newQue.CheckUserInQue(user.id)):
+#                 print('noithing')
+#             else:
+#                 print('adding '+user.name+' to Q')
+#                 newQue.AddUser(user.id)
+#                 if (newQue.CheckPop()):
+#                     #embedVar = newQue.EditQueMessage()
+#                     #await reaction.message.edit(embed=embedVar)
+#                     await reaction.message.delete()
+#
+#                     await channel.send('Que has popped ,participants are')
+#                     await channel.send(newQue.PopQue())
+#
+#                     newQue.ResetQue()
+#                     embedVar = newQue.StartQue()
+#                     messageObject = await channel.send(embed=embedVar)
+#                     emoji = '<:AYAYA:846389444840128562>'
+#                     await messageObject.add_reaction(emoji)
+#
+#                     print('Que message id is ' + str(messageObject.id))
+#                     newQue.RegisterMessage(messageObject)
+#
+#                 else:
+#                     embedVar = newQue.EditQueMessage()
+#                     await reaction.message.edit(embed=embedVar)
 
 
     # For normal response like aye fr, who asked, hello bye fuck you something like that
