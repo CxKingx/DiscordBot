@@ -464,8 +464,9 @@ async def endQ(ctx):
 @bot.command(name='startQ', help='Start a Dota Que')
 async def startQ(ctx):
     if newQue.QueExist:
-        await ctx.send('a que is in session , go to <#979725539243880498> to join the que')
+        await ctx.send('a que is in session , go to <#'+str(newQue.ChannelID)+'> to join the que')
     else:
+
         #guild = bot.get_guild(846380741209620480) #846380741209620483 gen 979033486340010015 bot
         channel = bot.get_channel(newQue.ChannelID)
 
@@ -480,7 +481,7 @@ async def startQ(ctx):
 @bot.command(name='pingQ', help='Ping the Queres')
 async def pingQ(ctx):
     remaining_Slot = newQue.QueLimit-len(newQue.CurrentQue)
-    await ctx.send('+'+str(remaining_Slot)+' @queres go to <#979725539243880498> to join the que')
+    await ctx.send('+'+str(remaining_Slot)+' go to <#'+str(newQue.ChannelID)+'> to join the que')
 
 @bot.command(name='getQ', help = 'Get Current Que')
 async def getQ(ctx):
@@ -507,11 +508,12 @@ async def on_raw_reaction_add(payload):
     print(payload.message_id)
     #print(newQue.messageObject.id)
     print(payload.member.id)
-    if payload.member.id != bot.user:
-        print('its a usder')
+    print(bot.user.id)
+    if payload.member.id != bot.user.id:
+        print('its a user')
         if str(payload.message_id) == str(newQue.messageObject.id):
             if (newQue.CheckUserInQue(payload.user_id)):
-                print('noithing')
+                print('nothing')
             else:
                 #print('adding ' + payload.nick + ' to Q')
                 newQue.AddUser(payload.user_id)
@@ -622,8 +624,8 @@ async def on_member_join(member):
     #         await channel.send(f"""Welcome {member.mention}!""")
     if member.id==307535807588204544:
         await member.send("Welcome Home Arthur-sama, we and Alice miss you")
-    else:
-        await member.send('Welcome to the channel, careful of racist people and smoke')
+    # else:
+    #     await member.send('Welcome to the channel, careful of racist people and smoke')
     # await bot.send_message(member,"Welcome!")
     # print('asd')
 

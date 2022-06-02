@@ -10,7 +10,10 @@ class QueSystem:
         self.PreviousQue = []
         self.messageObject = 0
         self.QueLimit = 10
-        self.ChannelID = 979725539243880498
+        self.ChannelID = 981448589115023420
+
+        # 981448589115023420 ATDL
+        # 979725539243880498 #Draz
 
     def StartQue(self):
         print('Starting Que')  # Current Q:
@@ -52,7 +55,7 @@ class QueSystem:
 
     def GetCurrentQue(self):
         embedVar = discord.Embed(title="Current Q: " + str(len(self.CurrentQue)) + '/' + str(self.QueLimit),
-                                 description='<#979725539243880498> to join Que', color=0x00ff00)
+                                 description='<#'+str(self.ChannelID)+'> to join Que', color=0x00ff00)
         quelist = ''
         if len(self.CurrentQue):
             for x in self.CurrentQue:
