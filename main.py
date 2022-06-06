@@ -502,6 +502,18 @@ async def refreshQ(ctx):
     print('Que message id is ' + str(messageObject.id))
     newQue.RegisterMessage(messageObject)
 
+@bot.command(name='removeQ', help = 'Remove a user in the Current Que')
+async def remove(ctx, user: discord.Member = None):
+    print(user)
+    if user:
+        print('removing user')
+        newQue.RemoveUser(user)
+        embedVar = newQue.EditQueMessage()
+        # print('mesg object is'+ str(newQue.messageObject))
+        await newQue.messageObject.edit(embed=embedVar)
+    else:
+        ctx.send('no user removed')
+
 @bot.event
 async def on_raw_reaction_add(payload):
     print(payload)
@@ -599,6 +611,7 @@ async def on_member_remove(member):
     print(member.name+"  have left the server")
     guild = bot.get_guild(846380741209620480)  # find ID by right clicking on server icon and choosing "copy id" at the bottom
     if guild.get_member(member.id) is None:  # find ID by right clicking on a user and choosing "copy id" at the bottom
+        print('success send')
         channel = bot.get_channel(846380741209620483)
         await channel.send(f"""{member.name} Has left""")
     else:
@@ -610,7 +623,7 @@ async def on_member_remove(member):
     #channel = discord.utils.get(bot.get_all_channels(), guild__name='Kuul Femili', name='berdiskusi')
     #await channel.send(f"""{member.name} Has left""")
 
-    #await member.send('take the L bozo')
+    await member.send('take the L bozo')
 
 
 
