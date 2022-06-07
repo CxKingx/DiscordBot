@@ -615,7 +615,7 @@ async def on_member_remove(member):
         channel = bot.get_channel(846380741209620483)
         await channel.send(f"""{member.name} Has left""")
     else:
-        print('notih')
+        print('nothing')
     # the member is not in the server, do something #
 
     #channel = discord.utils.get(bot.get_all_channels(), guild__name='Drazzers', name='general')
