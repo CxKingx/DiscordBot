@@ -483,7 +483,7 @@ async def startQ(ctx):
 @bot.command(name='pingQ', help='Ping the Queres')
 async def pingQ(ctx):
     remaining_Slot = newQue.QueLimit-len(newQue.CurrentQue)
-    await ctx.send('+'+str(remaining_Slot)+' go to <#'+str(newQue.ChannelID)+'> to join the que')
+    await ctx.send('<@&981468390101237770> +'+str(remaining_Slot)+' go to <#'+str(newQue.ChannelID)+'> to join the que')
 
 @bot.command(name='getQ', help = 'Get Current Que')
 async def getQ(ctx):
@@ -521,16 +521,16 @@ async def remove(ctx, user: discord.Member = None):
 async def on_raw_reaction_add(payload):
     print(payload)
     print(payload.message_id)
-    #print(newQue.messageObject.id)
-    print(payload.member.id)
-    print(payload.member.roles)
-    print(payload.member.roles[0])
-    print(payload.member.roles[0].name)
-    print(payload.member.roles[0].id)
-    print(bot.user.id)
+    channel = bot.get_channel(newQue.ChannelID)
+    guild = bot.get_guild(payload.guild_id)
+    role = discord.utils.get(guild.roles, name="Immortal")
+
     if payload.member.id != bot.user.id:
         print('its a user')
         if str(payload.message_id) == str(newQue.messageObject.id):
+            if role in payload.member.roles:
+                print('found a Immortal')  # <@ & 981468390101237770>
+                return
             if (newQue.CheckUserInQue(payload.user_id)):
                 print('nothing')
 
@@ -540,7 +540,7 @@ async def on_raw_reaction_add(payload):
 
                 newQue.AddUser(payload.user_id)
                 if (newQue.CheckPop()):
-                    channel = bot.get_channel(newQue.ChannelID)
+
                     # embedVar = newQue.EditQueMessage()
                     # await reaction.message.edit(embed=embedVar)
                     await newQue.messageObject.delete()
