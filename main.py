@@ -453,6 +453,7 @@ async def NPC(ctx, user: discord.Member = None):
         await ctx.send(embed=embedVar)
 
 @bot.command(name='endQ', help='End a Dota Que')
+@commands.has_any_role("MOD",'mod','Moderators')
 async def endQ(ctx):
     if newQue.QueExist:
         channel = bot.get_channel(newQue.ChannelID)
@@ -462,6 +463,7 @@ async def endQ(ctx):
         await ctx.send('no que to end')
 
 @bot.command(name='startQ', help='Start a Dota Que')
+@commands.has_any_role("MOD",'mod','Moderators')
 async def startQ(ctx):
     if newQue.QueExist:
         await ctx.send('a que is in session , go to <#'+str(newQue.ChannelID)+'> to join the que')
@@ -503,6 +505,7 @@ async def refreshQ(ctx):
     newQue.RegisterMessage(messageObject)
 
 @bot.command(name='removeQ', help = 'Remove a user in the Current Que')
+@commands.has_role("MOD")
 async def remove(ctx, user: discord.Member = None):
     print(user)
     if user:
@@ -520,14 +523,21 @@ async def on_raw_reaction_add(payload):
     print(payload.message_id)
     #print(newQue.messageObject.id)
     print(payload.member.id)
+    print(payload.member.roles)
+    print(payload.member.roles[0])
+    print(payload.member.roles[0].name)
+    print(payload.member.roles[0].id)
     print(bot.user.id)
     if payload.member.id != bot.user.id:
         print('its a user')
         if str(payload.message_id) == str(newQue.messageObject.id):
             if (newQue.CheckUserInQue(payload.user_id)):
                 print('nothing')
+
             else:
                 #print('adding ' + payload.nick + ' to Q')
+                #role = discord.utils.get(ctx.guild.roles, name="MOD")
+
                 newQue.AddUser(payload.user_id)
                 if (newQue.CheckPop()):
                     channel = bot.get_channel(newQue.ChannelID)
@@ -609,11 +619,17 @@ async def on_member_remove(member):
     print(member)
     print(member.id)
     print(member.name+"  have left the server")
+    channel = bot.get_channel(846380741209620483)
     guild = bot.get_guild(846380741209620480)  # find ID by right clicking on server icon and choosing "copy id" at the bottom
     if guild.get_member(member.id) is None:  # find ID by right clicking on a user and choosing "copy id" at the bottom
         print('success send')
-        channel = bot.get_channel(846380741209620483)
+
         await channel.send(f"""{member.name} Has left""")
+        try:
+            await member.send('take the L bozo')
+            await channel.send('Success sending Take the L bozo')
+        except:
+            await channel.send('Fail to send Take the L Bozo')
     else:
         print('nothing')
     # the member is not in the server, do something #
@@ -623,7 +639,7 @@ async def on_member_remove(member):
     #channel = discord.utils.get(bot.get_all_channels(), guild__name='Kuul Femili', name='berdiskusi')
     #await channel.send(f"""{member.name} Has left""")
 
-    await member.send('take the L bozo')
+
 
 
 
