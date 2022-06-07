@@ -19,7 +19,7 @@ from DotaQue import QueSystem
 from helplist import functionlist, weeblist, normalCommands
 from apifunction import WaifuPic
 from ReactionsFunction import WaitReaction
-
+from greetings import Greetings
 # Secret Discord Token
 my_secret = os.environ['DISCORD_TOKEN']
 # print(my_secret)
@@ -27,6 +27,7 @@ my_secret = os.environ['DISCORD_TOKEN']
 
 # client = discord.Client()
 bot = commands.Bot(command_prefix='^', intents=discord.Intents.all())
+bot.load_extension("greetings")
 waifuPic = WaifuPic()
 chancefunc = ChanceFunc()
 dbObject = DatabaseFunctions()
@@ -68,30 +69,33 @@ async def args(ctx, *args):
 async def rdm_number(ctx):
     await ctx.send(f'This is ur random number: {random.randrange(10000)}')
 
-@bot.command(name='ohayo', help='Ohaiyo List')
-async def ohayo(ctx):
-    ohaiyo_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
-                       "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
-                       "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
-                       "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
-                       "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
-                       "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
-                       "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
-    random_num = random.randrange(len(ohaiyo_messages))
-    await ctx.send('{} {}'.format(ohaiyo_messages[random_num], ctx.author.mention))
+
+### Moved to Cogs
+
+# @bot.command(name='ohayo', help='Ohaiyo List')
+# async def ohayo(ctx):
+#     ohaiyo_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
+#                        "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
+#                        "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
+#                        "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
+#                        "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
+#                        "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
+#                        "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
+#     random_num = random.randrange(len(ohaiyo_messages))
+#     await ctx.send('{} {}'.format(ohaiyo_messages[random_num], ctx.author.mention))
 
 
-@bot.command(name='otsukare', help='Otsukare List')
-async def otsukare(ctx):
-    otsukare_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
-                         "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
-                         "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
-                         "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
-                         "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
-                         "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
-                         "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
-    random_num = random.randrange(len(otsukare_messages))
-    await ctx.send('{} {}'.format(otsukare_messages[random_num], ctx.author.mention))
+# @bot.command(name='otsukare', help='Otsukare List')
+# async def otsukare(ctx):
+#     otsukare_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
+#                          "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
+#                          "Konnakiri!", "Ola! Choco!", "Chiwassu ", "Konbanmion! ", "Mogu mogu~ Okayu!", "Ooayo",
+#                          "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
+#                          "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
+#                          "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
+#                          "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~"]
+#     random_num = random.randrange(len(otsukare_messages))
+#     await ctx.send('{} {}'.format(otsukare_messages[random_num], ctx.author.mention))
 
 
 @bot.command(name='askchance', help='Ask a chance of something happening')
