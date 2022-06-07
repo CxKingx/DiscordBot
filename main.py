@@ -524,13 +524,16 @@ async def on_raw_reaction_add(payload):
     channel = bot.get_channel(newQue.ChannelID)
     guild = bot.get_guild(payload.guild_id)
     role = discord.utils.get(guild.roles, name="Immortal")
-
+    role2 = discord.utils.get(guild.roles, name="IHL blacklist")
     if payload.member.id != bot.user.id:
         print('its a user')
         if str(payload.message_id) == str(newQue.messageObject.id):
             if role in payload.member.roles:
                 print('found a Immortal')  # <@ & 981468390101237770>
-                return
+                return # <@ &983039702363934760>
+            if role2 in payload.member.roles:
+                print('found a Blacklist')  # <@ & 981468390101237770>
+                return  # <@ &983039702363934760>
             if (newQue.CheckUserInQue(payload.user_id)):
                 print('nothing')
 
