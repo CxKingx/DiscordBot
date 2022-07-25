@@ -504,18 +504,6 @@ async def refreshQ(ctx):
     print('Que message id is ' + str(messageObject.id))
     newQue.RegisterMessage(messageObject)
 
-@bot.command(name='removeQ', help = 'Remove a user in the Current Que')
-@commands.has_role("MOD")
-async def remove(ctx, user: discord.Member = None):
-    print(user)
-    if user:
-        print('removing user')
-        newQue.RemoveUser(user)
-        embedVar = newQue.EditQueMessage()
-        # print('mesg object is'+ str(newQue.messageObject))
-        await newQue.messageObject.edit(embed=embedVar)
-    else:
-        ctx.send('no user removed')
 
 @bot.command(name='removeQ', help = 'Remove a user in the Current Que')
 async def remove(ctx, user: discord.Member = None):
