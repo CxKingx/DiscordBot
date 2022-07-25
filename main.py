@@ -26,7 +26,7 @@ my_secret = os.environ['DISCORD_TOKEN']
 
 
 # client = discord.Client()
-bot = commands.Bot(command_prefix='^', intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='[', intents=discord.Intents.all())
 waifuPic = WaifuPic()
 chancefunc = ChanceFunc()
 dbObject = DatabaseFunctions()
@@ -517,23 +517,35 @@ async def remove(ctx, user: discord.Member = None):
     else:
         ctx.send('no user removed')
 
+@bot.command(name='removeQ', help = 'Remove a user in the Current Que')
+async def remove(ctx, user: discord.Member = None):
+    print(user)
+    if user:
+        print('removing user')
+        newQue.RemoveUser(user)
+        embedVar = newQue.EditQueMessage()
+        # print('mesg object is'+ str(newQue.messageObject))
+        await newQue.messageObject.edit(embed=embedVar)
+    else:
+        ctx.send('no user removed')
+
 @bot.event
 async def on_raw_reaction_add(payload):
     print(payload)
     print(payload.message_id)
     channel = bot.get_channel(newQue.ChannelID)
     guild = bot.get_guild(payload.guild_id)
-    role = discord.utils.get(guild.roles, name="Immortal")
-    role2 = discord.utils.get(guild.roles, name="IHL blacklist")
+    #role = discord.utils.get(guild.roles, name="Immortal")
+    #role2 = discord.utils.get(guild.roles, name="IHL blacklist")
     if payload.member.id != bot.user.id:
         print('its a user')
         if str(payload.message_id) == str(newQue.messageObject.id):
-            if role in payload.member.roles:
-                print('found a Immortal')  # <@ & 981468390101237770>
-                return # <@ &983039702363934760>
-            if role2 in payload.member.roles:
-                print('found a Blacklist')  # <@ & 981468390101237770>
-                return  # <@ &983039702363934760>
+            # if role in payload.member.roles:
+            #     print('found a Immortal')  # <@ & 981468390101237770>
+            #     return # <@ &983039702363934760>
+            # if role2 in payload.member.roles:
+            #     print('found a Blacklist')  # <@ & 981468390101237770>
+            #     return  # <@ &983039702363934760>
             if (newQue.CheckUserInQue(payload.user_id)):
                 print('nothing')
 

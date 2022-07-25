@@ -10,7 +10,7 @@ class QueSystem:
         self.PreviousQue = []
         self.messageObject = 0
         self.QueLimit = 10
-        self.ChannelID = 981448589115023420
+        self.ChannelID = 979725539243880498
 
         # 981448589115023420 ATDL
         # 979725539243880498 #Draz
