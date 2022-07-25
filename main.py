@@ -463,7 +463,7 @@ async def endQ(ctx):
         await ctx.send('no que to end')
 
 @bot.command(name='startQ', help='Start a Dota Que')
-@commands.has_any_role("MOD",'mod','Moderators')
+@commands.has_any_role("MOD",'mod','Moderators','Admin')
 async def startQ(ctx):
     if newQue.QueExist:
         await ctx.send('a que is in session , go to <#'+str(newQue.ChannelID)+'> to join the que')
