@@ -26,7 +26,7 @@ my_secret = os.environ['DISCORD_TOKEN']
 
 
 # client = discord.Client()
-bot = commands.Bot(command_prefix='&', intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='^', intents=discord.Intents.all())
 waifuPic = WaifuPic()
 chancefunc = ChanceFunc()
 dbObject = DatabaseFunctions()
