@@ -27,7 +27,7 @@ class DatabaseFunctions:
         con = sqlite3.connect('NPCcounter.db')
         cur = con.cursor()
         cur.execute(
-            '''CREATE TABLE IF NOT EXISTS NPCcounter (id integer PRIMARY KEY AUTOINCREMENT , DiscordID , AyeCounter , AskCounter)''')
+            '''CREATE TABLE IF NOT EXISTS NPCcounter (id integer PRIMARY KEY AUTOINCREMENT , DiscordID , AyeCounter , AskCounter , DNCounter , JoeCounter)''')
         con.commit()
         con.close()
         print('created database NPCCounter')
@@ -47,8 +47,8 @@ class DatabaseFunctions:
             message = '<@!'+str(discordID)+'> has commited who asked 1 time'
             embed.add_field(name="\u200b", value=message,
                             inline=False)
-            cur.execute('''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter) VALUES(?,?,?)''',
-                        [str(discordID), '0', '1'])
+            cur.execute('''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter,DNCounter,JoeCounter) VALUES(?,?,?,?,?)''',
+                        [str(discordID), '0', '1','0','0'])
             con.commit()
             con.close()
             #create and ad
@@ -81,8 +81,8 @@ class DatabaseFunctions:
             message = '<@!'+str(discordID)+'> has commited Aye FR 1 time'
             embed.add_field(name="\u200b", value=message,
                             inline=False)
-            cur.execute('''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter) VALUES(?,?,?)''',
-                        [str(discordID), '1', '0'])
+            cur.execute('''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter,DNCounter,JoeCounter) VALUES(?,?,?,?,?)''',
+                        [str(discordID), '1', '0','0','0'])
             con.commit()
             con.close()
             #create and ad
@@ -100,6 +100,80 @@ class DatabaseFunctions:
 
 
             message = '<@!' + str(discordID) + '> has commited aye fr '+str(addCounter)+' times'
+            embed = discord.Embed(description=message, color=0xda0b0b)
+
+            return embed
+
+    def AddDNCounter(self,discordID):
+        print('adding  DN counter')
+        con = sqlite3.connect('NPCcounter.db')
+        cur = con.cursor()
+        executeString = 'SELECT * FROM NPCcounter WHERE DiscordID ="' + str(discordID) + '"'
+        cur.execute(executeString)
+        result = cur.fetchall()
+        if (len(result) == 0):
+            print('first')
+            embed = discord.Embed(title="First NPC response", color=0xda0b0b)
+            message = '<@!'+str(discordID)+'> has commited DN 1 time'
+            embed.add_field(name="\u200b", value=message,
+                            inline=False)
+            cur.execute(
+                '''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter,DNCounter,JoeCounter) VALUES(?,?,?,?,?)''',
+                [str(discordID), '0', '0', '1', '0'])
+            con.commit()
+            con.close()
+            #create and ad
+            return embed
+        else:
+            print('not first')
+            print(result)
+
+            addCounter = int(result[0][4])+1
+            updatestring = "UPDATE NPCcounter SET DNCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
+                discordID) + "'"
+            cur.execute(updatestring)
+            con.commit()
+            con.close()
+
+
+            message = '<@!' + str(discordID) + '> has commited DN '+str(addCounter)+' times'
+            embed = discord.Embed(description=message, color=0xda0b0b)
+
+            return embed
+
+    def AddJoeCounter(self,discordID):
+        print('adding  DN counter')
+        con = sqlite3.connect('NPCcounter.db')
+        cur = con.cursor()
+        executeString = 'SELECT * FROM NPCcounter WHERE DiscordID ="' + str(discordID) + '"'
+        cur.execute(executeString)
+        result = cur.fetchall()
+        if (len(result) == 0):
+            print('first')
+            embed = discord.Embed(title="First NPC response", color=0xda0b0b)
+            message = '<@!'+str(discordID)+'> has commited Joe 1 time'
+            embed.add_field(name="\u200b", value=message,
+                            inline=False)
+            cur.execute(
+                '''INSERT INTO NPCcounter ( DiscordID, AyeCounter ,AskCounter,DNCounter,JoeCounter) VALUES(?,?,?,?,?)''',
+                [str(discordID), '0', '0', '0', '1'])
+            con.commit()
+            con.close()
+            #create and ad
+            return embed
+        else:
+            print('not first')
+            print(result)
+
+            addCounter = int(result[0][4])+1
+            updatestring = "UPDATE NPCcounter SET JoeCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
+                discordID) + "'"
+            cur.execute(updatestring)
+            con.commit()
+            con.close()
+
+
+            message = '<@!' + str(discordID) + '> has commited Joe '+str(addCounter)+' times'
             embed = discord.Embed(description=message, color=0xda0b0b)
 
             return embed

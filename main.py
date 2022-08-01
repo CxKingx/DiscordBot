@@ -65,6 +65,22 @@ async def args(ctx, *args):
     await ctx.channel.send(len(args))
     await ctx.channel.send(args[0])
 
+# @bot.command(name='dbadd', help='Random number Generator')
+# async def dbadd(ctx):
+#     con = sqlite3.connect('NPCcounter.db')
+#     cur = con.cursor()
+#     cur.execute(
+#         '''ALTER TABLE NPCcounter ADD DNCounter ''')
+#     con.commit()
+#     con.close()
+#     con = sqlite3.connect('NPCcounter.db')
+#     cur = con.cursor()
+#     cur.execute(
+#         '''ALTER TABLE NPCcounter ADD JoeCounter ''')
+#     con.commit()
+#     con.close()
+#     await ctx.send(f'This is ur random number: {random.randrange(10000)}')
+
 @bot.command(name='random', help='Random number Generator')
 async def rdm_number(ctx):
     await ctx.send(f'This is ur random number: {random.randrange(10000)}')
@@ -120,6 +136,8 @@ async def delmsg(ctx, messageID):
     original = await ctx.channel.fetch_message(messageID)
     # newmsg = message.channel.fetch_message(split_message[1])
     await original.delete()
+
+
 
 
 @bot.command(name='choose', help='Choose from your given options ^choose a;b;c;d;e;f')
@@ -744,6 +762,17 @@ async def on_message(message):
         #await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
 
+    joelist = ['joe']
+    if (any(x == user_message for x in joelist)) or (any(x in user_message.lower() for x in joelist)):
+        embedVar = dbObject.AddJoeCounter(message.author.id)
+        # await message.reply('Thats Crazy bro')
+        await message.channel.send(embed=embedVar)
+
+    DNList = ['dn','deez']
+    if (any(x == user_message for x in DNList)) or (any(x in user_message.lower() for x in DNList)):
+        embedVar = dbObject.AddDNCounter(message.author.id)
+        # await message.reply('Thats Crazy bro')
+        await message.channel.send(embed=embedVar)
     # AU 968109880428888094
     # if str(message.guild.id) == '846380741209620480':
     #     logchannel = bot.get_channel(1001138845603086366)
