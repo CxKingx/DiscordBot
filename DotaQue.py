@@ -14,6 +14,7 @@ class QueSystem:
 
         # 981448589115023420 ATDL
         # 979725539243880498 #Draz
+        # 1002156714365296701 Goblin
 
     def StartQue(self):
         print('Starting Que')  # Current Q:

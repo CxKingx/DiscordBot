@@ -26,7 +26,7 @@ my_secret = os.environ['DISCORD_TOKEN']
 
 
 # client = discord.Client()
-bot = commands.Bot(command_prefix='^', intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='&', intents=discord.Intents.all())
 waifuPic = WaifuPic()
 chancefunc = ChanceFunc()
 dbObject = DatabaseFunctions()
@@ -51,8 +51,9 @@ async def test(ctx, message: str):
     print(ctx)
     print(str(ctx))
     print(message)
+    id = ctx.message.guild.id
     await ctx.send(f'Hello {ctx.message.author.name}!')
-
+    await ctx.send(f'this is de ID '+str(id))
 
 @bot.command()
 async def args(ctx, *args):
@@ -606,7 +607,7 @@ async def on_raw_reaction_add(payload):
 async def on_raw_reaction_remove(payload):
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id)
-    channel = bot.get_channel(979033486340010015)
+    #channel = bot.get_channel(979033486340010015)
     #print('paylod is '+str(payload))
     print('ReactMSG ID = '+str(payload.message_id)+' QueMSGID= '+str(newQue.messageObject.id) )
     if str(payload.message_id) == str(newQue.messageObject.id):
@@ -742,8 +743,17 @@ async def on_message(message):
         embedVar = dbObject.AddAyeCounter(message.author.id)
         #await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
-    await bot.process_commands(message)
 
+    # AU 968109880428888094
+    # if str(message.guild.id) == '846380741209620480':
+    #     logchannel = bot.get_channel(1001138845603086366)
+    #     await logchannel.send(f'{username}: {user_message} ({channel})')
+
+    # if str(message.guild.id) == '1001345638421770341':
+    #     logchannel = bot.get_channel(1001886133803823144)
+    #     await logchannel.send(f'{username}: {user_message} ({channel})')
+
+    await bot.process_commands(message)
 
 bot.run(my_secret)
 # client.run(my_secret)

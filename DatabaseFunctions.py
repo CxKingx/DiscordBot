@@ -122,6 +122,7 @@ class DatabaseFunctions:
             message3='aye fr '+result[0][2]+' times'
             embed.add_field(name=message2, value='\u200b', inline=False)
             embed.add_field(name=message3, value='\u200b', inline=False)
+            #DN and Joe
             return embed
 
 
