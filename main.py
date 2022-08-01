@@ -686,11 +686,15 @@ async def on_member_join(member):
 async def on_message(message):
     username = str(message.author).split('#')[0]
     user_message = str(message.content)
-    # split_message = user_message.split()
+
+    split_message = user_message.split()
     channel = str(message.channel.name)
     channelID = str(message.channel.id)
     # channel_nsfw = message.channel.is_nsfw()
     print(f'{username}: {user_message} ({channel}) (ID: {channelID})')
+
+    print(split_message)
+
     # if message.author == bot.user:
     # return
     if message.author == bot.user:
@@ -762,17 +766,21 @@ async def on_message(message):
         #await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
 
-    joelist = ['joe']
+    joelist = ['joe','j03']
     if (any(x == user_message for x in joelist)) or (any(x in user_message.lower() for x in joelist)):
         embedVar = dbObject.AddJoeCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
 
     DNList = ['dn','deez']
-    if (any(x == user_message for x in DNList)) or (any(x in user_message.lower() for x in DNList)):
+    whitelistDN=['didnt','didn\'t']
+    if (any(x in user_message.lower() for x in whitelistDN)):
+        print('nothing')
+    elif (any(x == user_message for x in DNList)) or (any(x in user_message.lower() for x in DNList)):
         embedVar = dbObject.AddDNCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
+
     # AU 968109880428888094
     # if str(message.guild.id) == '846380741209620480':
     #     logchannel = bot.get_channel(1001138845603086366)

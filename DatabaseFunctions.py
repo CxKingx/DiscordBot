@@ -165,7 +165,7 @@ class DatabaseFunctions:
             print('not first')
             print(result)
 
-            addCounter = int(result[0][4])+1
+            addCounter = int(result[0][5])+1
             updatestring = "UPDATE NPCcounter SET JoeCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
                 discordID) + "'"
             cur.execute(updatestring)
@@ -192,11 +192,15 @@ class DatabaseFunctions:
         else:
             message = '<@!' + str(discordID) + '> NPC Responses Counter'
             embed = discord.Embed(description=message, color=0xda0b0b)
-            message2='Who Asked '+result[0][3]+' times'
-            message3='aye fr '+result[0][2]+' times'
+            message2 = 'Who Asked '+result[0][3]+' times'
+            message3 = 'aye fr ' + result[0][2] + ' times'
+            message4 = 'Joe ' + result[0][4] + ' times'
+            message5 = 'DN ' + result[0][5] + ' times'
             embed.add_field(name=message2, value='\u200b', inline=False)
             embed.add_field(name=message3, value='\u200b', inline=False)
             #DN and Joe
+            embed.add_field(name=message4, value='\u200b', inline=False)
+            embed.add_field(name=message5, value='\u200b', inline=False)
             return embed
 
 
