@@ -772,11 +772,11 @@ async def on_message(message):
         # await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
 
-    DNList = ['dn','deez']
+    DNList = [' dn','dn ','deez']
     whitelistDN=['didnt','didn\'t']
     if (any(x in user_message.lower() for x in whitelistDN)):
         print('nothing')
-    elif (any(x == user_message for x in DNList)) or (any(x in user_message.lower() for x in DNList)):
+    elif ('dn' == user_message.lower()) or (any(x in user_message.lower() for x in DNList)):
         embedVar = dbObject.AddDNCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
