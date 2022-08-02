@@ -693,7 +693,7 @@ async def on_message(message):
     # channel_nsfw = message.channel.is_nsfw()
     print(f'{username}: {user_message} ({channel}) (ID: {channelID})')
 
-    print(split_message)
+    #print(split_message)
 
     # if message.author == bot.user:
     # return
@@ -772,11 +772,10 @@ async def on_message(message):
         # await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)
 
+
     DNList = [' dn','dn ','deez']
-    whitelistDN=['didnt','didn\'t']
-    if (any(x in user_message.lower() for x in whitelistDN)):
-        print('nothing')
-    elif ('dn' == user_message.lower()) or (any(x in user_message.lower() for x in DNList)):
+    #whitelistDN=['didnt','didn\'t']
+    if ('dn' == user_message.lower()) or (any(x in user_message.lower() for x in DNList)):
         embedVar = dbObject.AddDNCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
         await message.channel.send(embed=embedVar)

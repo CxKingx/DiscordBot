@@ -128,7 +128,7 @@ class DatabaseFunctions:
             print('not first')
             print(result)
 
-            addCounter = int(result[0][4])+1
+            addCounter = int(result[0][5])+1
             updatestring = "UPDATE NPCcounter SET DNCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
                 discordID) + "'"
             cur.execute(updatestring)
@@ -142,7 +142,7 @@ class DatabaseFunctions:
             return embed
 
     def AddJoeCounter(self,discordID):
-        print('adding  DN counter')
+        print('adding  Joe counter')
         con = sqlite3.connect('NPCcounter.db')
         cur = con.cursor()
         executeString = 'SELECT * FROM NPCcounter WHERE DiscordID ="' + str(discordID) + '"'
@@ -165,7 +165,7 @@ class DatabaseFunctions:
             print('not first')
             print(result)
 
-            addCounter = int(result[0][5])+1
+            addCounter = int(result[0][4])+1
             updatestring = "UPDATE NPCcounter SET JoeCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
                 discordID) + "'"
             cur.execute(updatestring)
