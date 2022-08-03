@@ -54,8 +54,8 @@ class DatabaseFunctions:
             #create and ad
             return embed
         else:
-            print('not first')
-            print(result)
+            #print('not first')
+            #print(result)
 
             addCounter = int(result[0][3])+1
             updatestring = "UPDATE NPCcounter SET AskCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
@@ -88,8 +88,8 @@ class DatabaseFunctions:
             #create and ad
             return embed
         else:
-            print('not first')
-            print(result)
+            #print('not first')
+            #print(result)
 
             addCounter = int(result[0][2])+1
             updatestring = "UPDATE NPCcounter SET AyeCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
@@ -125,8 +125,8 @@ class DatabaseFunctions:
             #create and ad
             return embed
         else:
-            print('not first')
-            print(result)
+            # print('not first')
+            # print(result)
 
             addCounter = int(result[0][5])+1
             updatestring = "UPDATE NPCcounter SET DNCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
@@ -149,7 +149,7 @@ class DatabaseFunctions:
         cur.execute(executeString)
         result = cur.fetchall()
         if (len(result) == 0):
-            print('first')
+            #print('first')
             embed = discord.Embed(title="First NPC response", color=0xda0b0b)
             message = '<@!'+str(discordID)+'> has commited Joe 1 time'
             embed.add_field(name="\u200b", value=message,
@@ -162,8 +162,8 @@ class DatabaseFunctions:
             #create and ad
             return embed
         else:
-            print('not first')
-            print(result)
+            #print('not first')
+            #print(result)
 
             addCounter = int(result[0][4])+1
             updatestring = "UPDATE NPCcounter SET JoeCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(

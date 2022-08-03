@@ -731,6 +731,8 @@ async def on_message(message):
         random_num = random.randrange(len(otsukare_messages))
         await message.channel.send(f'{otsukare_messages[random_num]} <@{message.author.id}>')
 
+    #Ask , Aye, Joe,DN
+    NPCList=[0,0,0,0]
 
     whoasklist = ['who asked?', 'who asked', 'who asked ?', 'but who asked', 'no one asked your opinion', 'no one asked',
                   'tell me who asked', 'ok but who asked', 'did i ask','who tf asked','but who tf asked','but no one asked',
@@ -749,9 +751,10 @@ async def on_message(message):
                   'https://tenor.com/view/thats-crazy-djemilah-djemilah-birnie-crazy-cool-story-bro-gif-19887310']
 
     if 'who asked' in user_message.lower() or any(x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message.lower():
-        embedVar = dbObject.AddAskCounter(message.author.id)
-        await message.reply('I did')
-        await message.channel.send(embed=embedVar)
+        NPCList[0]=1
+        #embedVar = dbObject.AddAskCounter(message.author.id)
+        #await message.reply('I did')
+        #await message.channel.send(embed=embedVar)
 #a
     aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
                'fr tho','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
@@ -762,23 +765,64 @@ async def on_message(message):
 
                ]
     if (any(x == user_message for x in aye_list)) or (any(x in user_message.lower() for x in aye_list))or user_message.lower()=='aye':
+        NPCList[1] = 1
         embedVar = dbObject.AddAyeCounter(message.author.id)
         #await message.reply('Thats Crazy bro')
-        await message.channel.send(embed=embedVar)
+
+        #await message.channel.send(embed=embedVar)
 
     joelist = ['joe','j03']
     if (any(x == user_message for x in joelist)) or (any(x in user_message.lower() for x in joelist)):
-        embedVar = dbObject.AddJoeCounter(message.author.id)
+        NPCList[2] = 1
+        #embedVar = dbObject.AddJoeCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
-        await message.channel.send(embed=embedVar)
+
+        #await message.channel.send(embed=embedVar)
 
 
     DNList = [' dn','dn ','deez']
     #whitelistDN=['didnt','didn\'t']
     if ('dn' == user_message.lower()) or (any(x in user_message.lower() for x in DNList)):
-        embedVar = dbObject.AddDNCounter(message.author.id)
+        NPCList[3] = 1
+        #embedVar = dbObject.AddDNCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
-        await message.channel.send(embed=embedVar)
+        #await message.channel.send(embed=embedVar)
+
+    NPCCounter=0
+    for x in NPCList:
+        if x==1:
+            NPCCounter=NPCCounter+1
+
+    if NPCCounter==1:
+        print('only 1 go check which one')
+        if NPCList[0]==1:
+            embedVar = dbObject.AddAskCounter(message.author.id)
+            await message.reply('I did')
+            await message.channel.send(embed=embedVar)
+        elif NPCList[1]==1:
+            embedVar = dbObject.AddAyeCounter(message.author.id)
+            # await message.reply('Thats Crazy bro')
+            await message.channel.send(embed=embedVar)
+        elif NPCList[2] == 1:
+            embedVar = dbObject.AddJoeCounter(message.author.id)
+            await message.channel.send(embed=embedVar)
+        elif NPCList[3] == 1:
+            embedVar = dbObject.AddDNCounter(message.author.id)
+            await message.channel.send(embed=embedVar)
+    elif NPCCounter>1:
+        if NPCList[0]==1:
+            embedVar = dbObject.AddAskCounter(message.author.id)
+        elif NPCList[1]==1:
+            embedVar = dbObject.AddAyeCounter(message.author.id)
+        elif NPCList[2] == 1:
+            embedVar = dbObject.AddJoeCounter(message.author.id)
+        elif NPCList[3] == 1:
+            embedVar = dbObject.AddDNCounter(message.author.id)
+        NPCmessage = '<@!' + str(message.author.id) + '> bot behaviour detected '
+        embedMultiple = discord.Embed(description=NPCmessage, color=0xda0b0b)
+        await message.channel.send(embed=embedMultiple)
+
+
 
     # AU 968109880428888094
     # if str(message.guild.id) == '846380741209620480':
