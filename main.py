@@ -714,7 +714,7 @@ async def on_message(message):
                              "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
                              "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
                              "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~","Good Morning",
-                             "おはようございます", "Selamat Pagi", "Pagi Anjeng", "Pagi Cuk"]
+                             "おはようございます", "Selamat Pagi", "Pagi Anjeng", "Pagi Cuk","Ina ina i~na","Hic!"]
         random_num = random.randrange(len(greeting_messages))
         await message.channel.send(f'{greeting_messages[random_num]} <@{message.author.id}>')
 
