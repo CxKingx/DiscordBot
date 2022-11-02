@@ -50,8 +50,6 @@ class QueSystem:
         print('removed from que ' + str(UserID.id))
         self.CurrentQue.remove(str(UserID.id))
 
-        # print('cur que is ')
-        # print(self.CurrentQue)
         return
 
     def GetCurrentQue(self):
@@ -69,7 +67,6 @@ class QueSystem:
         return embedVar
 
     def EditQueMessage(self):
-
         embedVar = discord.Embed(title="Current Q: " + str(len(self.CurrentQue)) + '/' + str(self.QueLimit),
                                  description='Press the reaction to join ', color=0x00ff00)
         quelist = ''

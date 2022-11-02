@@ -32,6 +32,7 @@ chancefunc = ChanceFunc()
 dbObject = DatabaseFunctions()
 newQue = QueSystem()
 
+
 @bot.event
 async def on_ready():
     print('We have logged in as  {0.user}'.format(bot))
@@ -52,8 +53,11 @@ async def test(ctx, message: str):
     print(str(ctx))
     print(message)
     id = ctx.message.guild.id
+    message = '[here](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)'
+    embedVar = discord.Embed(title='Test',description=message, color=0x00ff00)
     await ctx.send(f'Hello {ctx.message.author.name}!')
-    await ctx.send(f'this is de ID '+str(id))
+    await ctx.send(embed = embedVar)
+
 
 @bot.command()
 async def args(ctx, *args):
@@ -65,25 +69,42 @@ async def args(ctx, *args):
     await ctx.channel.send(len(args))
     await ctx.channel.send(args[0])
 
-# @bot.command(name='dbadd', help='Random number Generator')
-# async def dbadd(ctx):
-#     con = sqlite3.connect('NPCcounter.db')
-#     cur = con.cursor()
-#     cur.execute(
-#         '''ALTER TABLE NPCcounter ADD DNCounter ''')
-#     con.commit()
-#     con.close()
-#     con = sqlite3.connect('NPCcounter.db')
-#     cur = con.cursor()
-#     cur.execute(
-#         '''ALTER TABLE NPCcounter ADD JoeCounter ''')
-#     con.commit()
-#     con.close()
-#     await ctx.send(f'This is ur random number: {random.randrange(10000)}')
+
+@bot.command(name='hbd', help='Gives Get Dota IDs')
+async def hbd(ctx, *args):
+    response = []
+    for arg in args:
+        response.append(int(arg))
+        member = bot.get_user(int(arg))
+        try:
+            await member.send(
+                'Happy Birthday Friend , From CxKingx-Kevin Ferdinand')
+            print('success send to ' + str(arg))
+
+        except:
+            print('Failed to Send Message'+ str(arg))
+    await ctx.channel.send(response)
+
+### Dota ID Section
+@bot.command(name='hbd2', help='Gives Get Dota IDs')
+async def hbd(ctx, theID):
+    if theID:
+        member = bot.get_user(int(theID))
+        # member = guild.get_member(str(x[0]))
+        try:
+            await member.send(
+                'Thanks for Birthday Wishes, this message will hack your account now <:a_:1009689158068998144> ')
+        except:
+            print('Failed to Send Message')
+        # await ctx.send(embed=embedVar)
+    else:  # not mention get self
+        print('nothing')
+
 
 @bot.command(name='random', help='Random number Generator')
 async def rdm_number(ctx):
     await ctx.send(f'This is ur random number: {random.randrange(10000)}')
+
 
 @bot.command(name='ohayo', help='Ohaiyo List')
 async def ohayo(ctx):
@@ -121,6 +142,7 @@ async def askchance(ctx, *args):
     print('newmsg is' + str(chancefunc.getMessage()))
     await ctx.send(chancefunc.askchance())
 
+
 @bot.command(name='scrt', help='Message using the bot')
 async def secret(ctx, *args):
     message = " ".join(args)
@@ -129,15 +151,14 @@ async def secret(ctx, *args):
     await ctx.message.delete()
     await ctx.send(message)
 
-#@bot.command(name='delmsg', help='Delete Message using the bot')
-@bot.command(name='delmsg' , hidden=True)
+
+# @bot.command(name='delmsg', help='Delete Message using the bot')
+@bot.command(name='delmsg', hidden=True)
 async def delmsg(ctx, messageID):
     await ctx.message.delete()
     original = await ctx.channel.fetch_message(messageID)
     # newmsg = message.channel.fetch_message(split_message[1])
     await original.delete()
-
-
 
 
 @bot.command(name='choose', help='Choose from your given options ^choose a;b;c;d;e;f')
@@ -150,15 +171,15 @@ async def ChooseChoices(ctx, *args):
         print('newmsg is' + str(chancefunc.getMessage()))
         await ctx.send(embed=chancefunc.choosechoices())
 
+
 ### Mod Functions
 @bot.command()
 async def timeout(ctx, user: discord.Member, time=None, reason=None):
-  time = humanfriendly.parse_timespan(time)
-  await user.timeout_for(time)
-  #await user.edit(timed_out_until=datetime.timedelta(seconds=time))
-  #await user.timeout(until = discord.utils.utcnow() + datetime.timedelta(seconds=time), reason=reason)
-  await ctx.send (f"{user} Timeouted for {time}")
-
+    time = humanfriendly.parse_timespan(time)
+    await user.timeout_for(time)
+    # await user.edit(timed_out_until=datetime.timedelta(seconds=time))
+    # await user.timeout(until = discord.utils.utcnow() + datetime.timedelta(seconds=time), reason=reason)
+    await ctx.send(f"{user} Timeouted for {time}")
 
 
 ### Mod Function End
@@ -262,6 +283,7 @@ async def cry(ctx):
     embedVar.set_image(url=list(image.values())[0])
     await ctx.send(embed=embedVar)
 
+
 @bot.command(name='aniquote', help='Gives a quote from a random anime')
 async def aniquote(ctx):
     content = waifuPic.fetchanimuquote()
@@ -269,6 +291,7 @@ async def aniquote(ctx):
     msg = list(content.values())[0]
     embedVar = discord.Embed(title=titlemsg, description=msg, color=0x00ff00)
     await ctx.channel.send(embed=embedVar)
+
 
 @bot.command(name='megumin', help='Gives megumin Image')
 async def megumin(ctx):
@@ -355,9 +378,10 @@ async def boob(ctx):
     else:
         await ctx.send('Please use dis command in a NSFW Channel')
 
+
 ### Animu Section End
 
-### Dota ID Section
+
 
 @bot.command(name='id', help='Gives Get Dota IDs')
 async def getID(ctx, user: discord.Member = None):
@@ -384,7 +408,7 @@ async def registerID(ctx, *args):
 @bot.command(name='forceregister', help='Register Dota IDs(Can only be done by CxKingx')
 async def registerID(ctx, *args):
     print(args)
-    if len(args) == 3 and ctx.author.id ==241817188665786369:
+    if len(args) == 3 and ctx.author.id == 241817188665786369:
         if args[1] == 'main' or args[1] == 'smurf':
             embedVar = dbObject.registerDotaID(ctx.author.id, args[1], args[2])
             await ctx.channel.send(embed=embedVar)
@@ -393,41 +417,47 @@ async def registerID(ctx, *args):
     else:
         await ctx.channel.send('Only <@!241817188665786369> can use this')
 
+
 @bot.command(name='deleteid', help='Delete Dota IDs(Can only be done by CxKingx')
 async def DeleteID(ctx, *args):
     print(args)
-    if len(args) == 1 and ctx.author.id ==241817188665786369:
+    if len(args) == 1 and ctx.author.id == 241817188665786369:
         embedVar = dbObject.deleteDotaID(args[0])
         await ctx.channel.send(embed=embedVar)
     else:
         await ctx.channel.send('Only <@!241817188665786369> can use this')
 
+
 ### Dota ID Section End
 
 ### Image Database Section
 
-@bot.command(name='get', help='Get Image' ,Category='Images')
+@bot.command(name='get', help='Get Image', Category='Images')
 async def getImage(ctx, ImageName):
     imagemessage = dbObject.getImage(ImageName)
     await ctx.channel.send(imagemessage)
 
-@bot.command(name='delete', help='Delete Image',Category='Images')
+
+@bot.command(name='delete', help='Delete Image', Category='Images')
 async def deleteImage(ctx, ImageName):
     imagemessage = dbObject.deleteimage(ImageName)
     await ctx.channel.send(imagemessage)
 
-@bot.command(name='imglist', help='Get Image',Category='Images')
+
+@bot.command(name='imglist', help='Get Image', Category='Images')
 async def imageList(ctx):
     embedVar = dbObject.getImageList()
     await ctx.channel.send(embed=embedVar)
 
+
 @bot.command(name='save', help='Get Image')
-async def saveImage(ctx,*args):
-    if len(args)==2:
-        savestatus =dbObject.registerImage(args[0], args[1])
+async def saveImage(ctx, *args):
+    if len(args) == 2:
+        savestatus = dbObject.registerImage(args[0], args[1])
         await ctx.channel.send(savestatus)
     else:
         await ctx.channel.send('Wrong Syntax, please use ^save imgname imglink')
+
 
 ### Database Image Section end
 
@@ -462,6 +492,7 @@ async def avatar(ctx, user: discord.Member = None):
         embedVar2.set_image(url=ctx.author.avatar_url)
         await ctx.send(embed=embedVar2)
 
+
 @bot.command(name='check', help='Check someones NPC response')
 async def NPC(ctx, user: discord.Member = None):
     if user:
@@ -471,8 +502,9 @@ async def NPC(ctx, user: discord.Member = None):
         embedVar = dbObject.GetNPCCounter(ctx.author.id)
         await ctx.send(embed=embedVar)
 
+
 @bot.command(name='endQ', help='End a Dota Que')
-@commands.has_any_role("MOD",'mod','Moderators')
+@commands.has_any_role("MOD", 'mod', 'Moderators')
 async def endQ(ctx):
     if newQue.QueExist:
         channel = bot.get_channel(newQue.ChannelID)
@@ -481,14 +513,15 @@ async def endQ(ctx):
     else:
         await ctx.send('no que to end')
 
+
 @bot.command(name='startQ', help='Start a Dota Que')
-@commands.has_any_role("MOD",'mod','Moderators','Admin')
+@commands.has_any_role("MOD", 'mod', 'Moderators', 'Admin')
 async def startQ(ctx):
     if newQue.QueExist:
-        await ctx.send('a que is in session , go to <#'+str(newQue.ChannelID)+'> to join the que')
+        await ctx.send('a que is in session , go to <#' + str(newQue.ChannelID) + '> to join the que')
     else:
 
-        #guild = bot.get_guild(846380741209620480) #846380741209620483 gen 979033486340010015 bot
+        # guild = bot.get_guild(846380741209620480) #846380741209620483 gen 979033486340010015 bot
         channel = bot.get_channel(newQue.ChannelID)
 
         embedVar = newQue.StartQue()
@@ -496,25 +529,29 @@ async def startQ(ctx):
         emoji = '<:AYAYA:846389444840128562>'
         await messageObject.add_reaction(emoji)
 
-        print('Que message id is '+str(messageObject.id))
+        print('Que message id is ' + str(messageObject.id))
         newQue.RegisterMessage(messageObject)
+
 
 @bot.command(name='pingQ', help='Ping the Queres')
 async def pingQ(ctx):
-    remaining_Slot = newQue.QueLimit-len(newQue.CurrentQue)
-    await ctx.send('<@&981468390101237770> +'+str(remaining_Slot)+' go to <#'+str(newQue.ChannelID)+'> to join the que')
+    remaining_Slot = newQue.QueLimit - len(newQue.CurrentQue)
+    await ctx.send(
+        '<@&981468390101237770> +' + str(remaining_Slot) + ' go to <#' + str(newQue.ChannelID) + '> to join the que')
 
-@bot.command(name='getQ', help = 'Get Current Que')
+
+@bot.command(name='getQ', help='Get Current Que')
 async def getQ(ctx):
     embedVar = newQue.GetCurrentQue()
     await ctx.send(embed=embedVar)
 
-@bot.command(name='refreshQ', help = 'Refresh Current Que')
+
+@bot.command(name='refreshQ', help='Refresh Current Que')
 async def refreshQ(ctx):
     await newQue.messageObject.delete()
     channel = bot.get_channel(newQue.ChannelID)
 
-    #embedVar = newQue.StartQue()
+    # embedVar = newQue.StartQue()
     embedVar = newQue.EditQueMessage()
     messageObject = await channel.send(embed=embedVar)
     emoji = '<:AYAYA:846389444840128562>'
@@ -524,7 +561,7 @@ async def refreshQ(ctx):
     newQue.RegisterMessage(messageObject)
 
 
-@bot.command(name='removeQ', help = 'Remove a user in the Current Que')
+@bot.command(name='removeQ', help='Remove a user in the Current Que')
 async def remove(ctx, user: discord.Member = None):
     print(user)
     if user:
@@ -536,14 +573,15 @@ async def remove(ctx, user: discord.Member = None):
     else:
         ctx.send('no user removed')
 
+
 @bot.event
 async def on_raw_reaction_add(payload):
     print(payload)
     print(payload.message_id)
     channel = bot.get_channel(newQue.ChannelID)
     guild = bot.get_guild(payload.guild_id)
-    #role = discord.utils.get(guild.roles, name="Immortal")
-    #role2 = discord.utils.get(guild.roles, name="IHL blacklist")
+    # role = discord.utils.get(guild.roles, name="Immortal")
+    # role2 = discord.utils.get(guild.roles, name="IHL blacklist")
     if payload.member.id != bot.user.id:
         print('its a user')
         if str(payload.message_id) == str(newQue.messageObject.id):
@@ -557,8 +595,8 @@ async def on_raw_reaction_add(payload):
                 print('nothing')
 
             else:
-                #print('adding ' + payload.nick + ' to Q')
-                #role = discord.utils.get(ctx.guild.roles, name="MOD")
+                # print('adding ' + payload.nick + ' to Q')
+                # role = discord.utils.get(ctx.guild.roles, name="MOD")
 
                 newQue.AddUser(payload.user_id)
                 if (newQue.CheckPop()):
@@ -582,6 +620,7 @@ async def on_raw_reaction_add(payload):
                 else:
                     embedVar = newQue.EditQueMessage()
                     await newQue.messageObject.edit(embed=embedVar)
+
 
 # @bot.event
 # async def on_reaction_add(reaction, user):
@@ -619,30 +658,32 @@ async def on_raw_reaction_add(payload):
 #                     await reaction.message.edit(embed=embedVar)
 
 
-    # For normal response like aye fr, who asked, hello bye fuck you something like that
+# For normal response like aye fr, who asked, hello bye fuck you something like that
 
 @bot.event
 async def on_raw_reaction_remove(payload):
     guild = bot.get_guild(payload.guild_id)
     member = guild.get_member(payload.user_id)
-    #channel = bot.get_channel(979033486340010015)
-    #print('paylod is '+str(payload))
-    print('ReactMSG ID = '+str(payload.message_id)+' QueMSGID= '+str(newQue.messageObject.id) )
+    # channel = bot.get_channel(979033486340010015)
+    # print('paylod is '+str(payload))
+    print('ReactMSG ID = ' + str(payload.message_id) + ' QueMSGID= ' + str(newQue.messageObject.id))
     if str(payload.message_id) == str(newQue.messageObject.id):
         print(newQue.CurrentQue)
         newQue.RemoveUser(member)
         embedVar = newQue.EditQueMessage()
-        #print('mesg object is'+ str(newQue.messageObject))
+        # print('mesg object is'+ str(newQue.messageObject))
         await newQue.messageObject.edit(embed=embedVar)
-    #print('remove reaction')
+    # print('remove reaction')
+
 
 @bot.event
 async def on_member_remove(member):
     print(member)
     print(member.id)
-    print(member.name+"  have left the server")
+    print(member.name + "  have left the server")
     channel = bot.get_channel(846380741209620483)
-    guild = bot.get_guild(846380741209620480)  # find ID by right clicking on server icon and choosing "copy id" at the bottom
+    guild = bot.get_guild(
+        846380741209620480)  # find ID by right clicking on server icon and choosing "copy id" at the bottom
     if guild.get_member(member.id) is None:  # find ID by right clicking on a user and choosing "copy id" at the bottom
         print('success send')
 
@@ -656,13 +697,10 @@ async def on_member_remove(member):
         print('nothing')
     # the member is not in the server, do something #
 
-    #channel = discord.utils.get(bot.get_all_channels(), guild__name='Drazzers', name='general')
-    #channel=bot.get_channel(846380741209620483)
-    #channel = discord.utils.get(bot.get_all_channels(), guild__name='Kuul Femili', name='berdiskusi')
-    #await channel.send(f"""{member.name} Has left""")
-
-
-
+    # channel = discord.utils.get(bot.get_all_channels(), guild__name='Drazzers', name='general')
+    # channel=bot.get_channel(846380741209620483)
+    # channel = discord.utils.get(bot.get_all_channels(), guild__name='Kuul Femili', name='berdiskusi')
+    # await channel.send(f"""{member.name} Has left""")
 
 
 @bot.event
@@ -673,13 +711,12 @@ async def on_member_join(member):
     # for channel in member.guild.channels:
     #     if str(channel) == "Kuul Femili":
     #         await channel.send(f"""Welcome {member.mention}!""")
-    if member.id==307535807588204544:
+    if member.id == 307535807588204544:
         await member.send("Welcome Home Arthur-sama, we and Alice miss you")
     # else:
     #     await member.send('Welcome to the channel, careful of racist people and smoke')
     # await bot.send_message(member,"Welcome!")
     # print('asd')
-
 
 
 @bot.event
@@ -693,7 +730,7 @@ async def on_message(message):
     # channel_nsfw = message.channel.is_nsfw()
     print(f'{username}: {user_message} ({channel}) (ID: {channelID})')
 
-    #print(split_message)
+    # print(split_message)
 
     # if message.author == bot.user:
     # return
@@ -705,7 +742,7 @@ async def on_message(message):
         await message.channel.send(f'Well fak u too {username}! ')
         await message.channel.send(f'https://tenor.com/view/kizuna-ai-fuck-you-mad-gif-13724813')
 
-    morningTrigger = ['gm', 'morning', 'good morning', 'mornin','ohayo']
+    morningTrigger = ['gm', 'morning', 'good morning', 'mornin', 'ohayo']
     if any(x == user_message.lower() for x in morningTrigger):
         greeting_messages = ["Haro~bo~", "Nya-hello~!", "Sui-chan wa~ Kyou mo Kawaii~!!", "Konsomē", "Konkapu",
                              "Konbankitsune~", "Konbanwasshoi!", "Alona", "Haachama-chama~!", "Konaqua!", "Konshio ",
@@ -713,13 +750,12 @@ async def on_message(message):
                              "Konpeko, konpeko, konpeko! Hololive san-kisei no Usada Pekora-peko! domo, domo!",
                              "Konrushi~", "Konnui", "Konbanmassuru ", "Ahoy!", "Konkanata",
                              "Good Morning MotherFuckers", "Konbandododooo ", "Konyappi", "Minna~Oru~?", "Konlamy ",
-                             "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~","Good Morning",
-                             "おはようございます", "Selamat Pagi", "Pagi Anjeng", "Pagi Cuk","Ina ina i~na","Hic!"]
+                             "Kon-nene!", " La Lion~・RaRa-ion ", "Poruka oru ka? Oru yo!", "Hey guys~", "Good Morning",
+                             "おはようございます", "Selamat Pagi", "Pagi Anjeng", "Pagi Cuk", "Ina ina i~na", "Hic!"]
         random_num = random.randrange(len(greeting_messages))
         await message.channel.send(f'{greeting_messages[random_num]} <@{message.author.id}>')
 
-
-    NightTrigger = ['bye', 'good night', 'gn', '<:bedge:906981474916507739>', 'oyasumi','otsukare']
+    NightTrigger = ['bye', 'good night', 'gn', '<:bedge:906981474916507739>', 'oyasumi', 'otsukare']
     if any(x == user_message.lower() for x in NightTrigger):
         otsukare_messages = ["Otsu-kōn deshita!", "Otsurobo", "OtsuMiko~", "Otsumachi!!", "Otsukapu",
                              "Omatsuriwasshoi!", "Otsuthal", "Otsuruuju!", "otsuaqua!", "Otsuru-n", "Otsunakiri!",
@@ -731,13 +767,15 @@ async def on_message(message):
         random_num = random.randrange(len(otsukare_messages))
         await message.channel.send(f'{otsukare_messages[random_num]} <@{message.author.id}>')
 
-    #Ask , Aye, Joe,DN
-    NPCList=[0,0,0,0]
+    # Ask , Aye, Joe,DN
+    NPCList = [0, 0, 0, 0]
 
-    whoasklist = ['who asked?', 'who asked', 'who asked ?', 'but who asked', 'no one asked your opinion', 'no one asked',
-                  'tell me who asked', 'ok but who asked', 'did i ask','who tf asked','but who tf asked','but no one asked',
-                  'who dafook arsked','whos askingtho','whos asking'
-                  'https://tenor.com/view/thats-crazy-fr-hoe-who-asked-gif-21374201',
+    whoasklist = ['who asked?', 'who asked', 'who asked ?', 'but who asked', 'no one asked your opinion',
+                  'no one asked',
+                  'tell me who asked', 'ok but who asked', 'did i ask', 'who tf asked', 'but who tf asked',
+                  'but no one asked',
+                  'who dafook arsked', 'whos askingtho', 'whos asking'
+                                                         'https://tenor.com/view/thats-crazy-fr-hoe-who-asked-gif-21374201',
                   'https://tenor.com/view/among-us-killer-bean-tf-asked-who-asked-dance-gif-18838836',
                   'https://tenor.com/view/who-asked-k-on-yui-anime-anime-girl-gif-24260375',
                   'https://tenor.com/view/who-asked-yo-bro-gif-22344826',
@@ -750,56 +788,60 @@ async def on_message(message):
                   'https://tenor.com/view/asked-gif-19790611',
                   'https://tenor.com/view/thats-crazy-djemilah-djemilah-birnie-crazy-cool-story-bro-gif-19887310']
 
-    if 'who asked' in user_message.lower() or any(x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message.lower():
-        NPCList[0]=1
-        #embedVar = dbObject.AddAskCounter(message.author.id)
-        #await message.reply('I did')
-        #await message.channel.send(embed=embedVar)
-#a
-    aye_list =['aye fr','ÀŸŸ FR','ÂŸĘ FR','ayefr','ayye','ayez frz','ayez','frz','aye for real','damn thats crazy',
-               'fr tho','哎，真的','ayfr','aye frr','a** *r','‎Â‎YE fr','ÀYE FR','Æ FR','ÁŸE FR','ong fr','4Y3 fr',
-               'ÁŸE FR','ÂŸĘ FR','RF EYA',':eye::flag_fr:','АYE FRR','👁️🇫🇷','fr ong?','ayz foreal','ayz for real','eye fr',
-               'a4 real',
-               'https://tenor.com/view/fr-fr-ong-gif-24732056',
-               'https://tenor.com/view/lil-uzi-vert-yeah-aye-fr-tho-for-real-gif-17343447',
+    if 'who asked' in user_message.lower() or any(
+            x == user_message.lower() for x in whoasklist) or 'who-asked' in user_message.lower():
+        NPCList[0] = 1
+        # embedVar = dbObject.AddAskCounter(message.author.id)
+        # await message.reply('I did')
+        # await message.channel.send(embed=embedVar)
+    # a
+    aye_list = ['aye fr', 'ÀŸŸ FR', 'ÂŸĘ FR', 'ayefr', 'ayye', 'ayez frz', 'ayez', 'frz', 'aye for real',
+                'damn thats crazy',
+                'fr tho', '哎，真的', 'ayfr', 'aye frr', 'a** *r', '‎Â‎YE fr', 'ÀYE FR', 'Æ FR', 'ÁŸE FR', 'ong fr',
+                '4Y3 fr',
+                'ÁŸE FR', 'ÂŸĘ FR', 'RF EYA', ':eye::flag_fr:', 'АYE FRR', '👁️🇫🇷', 'fr ong?', 'ayz foreal',
+                'ayz for real', 'eye fr',
+                'a4 real',
+                'https://tenor.com/view/fr-fr-ong-gif-24732056',
+                'https://tenor.com/view/lil-uzi-vert-yeah-aye-fr-tho-for-real-gif-17343447',
 
-               ]
-    if (any(x == user_message for x in aye_list)) or (any(x in user_message.lower() for x in aye_list))or user_message.lower()=='aye':
+                ]
+    if (any(x == user_message for x in aye_list)) or (
+    any(x in user_message.lower() for x in aye_list)) or user_message.lower() == 'aye':
         NPCList[1] = 1
         embedVar = dbObject.AddAyeCounter(message.author.id)
-        #await message.reply('Thats Crazy bro')
+        # await message.reply('Thats Crazy bro')
 
-        #await message.channel.send(embed=embedVar)
+        # await message.channel.send(embed=embedVar)
 
-    joelist = ['joe','j03']
+    joelist = ['joe', 'j03']
     if (any(x == user_message for x in joelist)) or (any(x in user_message.lower() for x in joelist)):
         NPCList[2] = 1
-        #embedVar = dbObject.AddJoeCounter(message.author.id)
+        # embedVar = dbObject.AddJoeCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
 
-        #await message.channel.send(embed=embedVar)
+        # await message.channel.send(embed=embedVar)
 
-
-    DNList = [' dn','dn ','deez']
-    #whitelistDN=['didnt','didn\'t']
+    DNList = [' dn', 'dn ', 'deez','these nuts']
+    # whitelistDN=['didnt','didn\'t']
     if ('dn' == user_message.lower()) or (any(x in user_message.lower() for x in DNList)):
         NPCList[3] = 1
-        #embedVar = dbObject.AddDNCounter(message.author.id)
+        # embedVar = dbObject.AddDNCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
-        #await message.channel.send(embed=embedVar)
+        # await message.channel.send(embed=embedVar)
 
-    NPCCounter=0
+    NPCCounter = 0
     for x in NPCList:
-        if x==1:
-            NPCCounter=NPCCounter+1
+        if x == 1:
+            NPCCounter = NPCCounter + 1
 
-    if NPCCounter==1:
+    if NPCCounter == 1:
         print('only 1 go check which one')
-        if NPCList[0]==1:
+        if NPCList[0] == 1:
             embedVar = dbObject.AddAskCounter(message.author.id)
             await message.reply('I did')
             await message.channel.send(embed=embedVar)
-        elif NPCList[1]==1:
+        elif NPCList[1] == 1:
             embedVar = dbObject.AddAyeCounter(message.author.id)
             # await message.reply('Thats Crazy bro')
             await message.channel.send(embed=embedVar)
@@ -809,10 +851,10 @@ async def on_message(message):
         elif NPCList[3] == 1:
             embedVar = dbObject.AddDNCounter(message.author.id)
             await message.channel.send(embed=embedVar)
-    elif NPCCounter>1:
-        if NPCList[0]==1:
+    elif NPCCounter > 1:
+        if NPCList[0] == 1:
             embedVar = dbObject.AddAskCounter(message.author.id)
-        elif NPCList[1]==1:
+        elif NPCList[1] == 1:
             embedVar = dbObject.AddAyeCounter(message.author.id)
         elif NPCList[2] == 1:
             embedVar = dbObject.AddJoeCounter(message.author.id)
@@ -821,8 +863,6 @@ async def on_message(message):
         NPCmessage = '<@!' + str(message.author.id) + '> bot behaviour detected '
         embedMultiple = discord.Embed(description=NPCmessage, color=0xda0b0b)
         await message.channel.send(embed=embedMultiple)
-
-
 
     # AU 968109880428888094
     # if str(message.guild.id) == '846380741209620480':
@@ -834,6 +874,7 @@ async def on_message(message):
     #     await logchannel.send(f'{username}: {user_message} ({channel})')
 
     await bot.process_commands(message)
+
 
 bot.run(my_secret)
 # client.run(my_secret)
