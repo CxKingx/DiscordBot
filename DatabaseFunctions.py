@@ -90,15 +90,14 @@ class DatabaseFunctions:
         else:
             #print('not first')
             #print(result)
-
+            print("Ori is "+str(result[0][2]) )
             addCounter = int(result[0][2])+1
+            print("Added is " + str(addCounter))
             updatestring = "UPDATE NPCcounter SET AyeCounter = '" + str(addCounter) + "' WHERE DiscordID = '" + str(
                 discordID) + "'"
             cur.execute(updatestring)
             con.commit()
             con.close()
-
-
             message = '<@!' + str(discordID) + '> has commited aye fr '+str(addCounter)+' times'
             embed = discord.Embed(description=message, color=0xda0b0b)
 

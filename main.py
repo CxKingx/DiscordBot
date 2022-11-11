@@ -794,7 +794,7 @@ async def on_message(message):
         # embedVar = dbObject.AddAskCounter(message.author.id)
         # await message.reply('I did')
         # await message.channel.send(embed=embedVar)
-    # a
+
     aye_list = ['aye fr', 'ÀŸŸ FR', 'ÂŸĘ FR', 'ayefr', 'ayye', 'ayez frz', 'ayez', 'frz', 'aye for real',
                 'damn thats crazy',
                 'fr tho', '哎，真的', 'ayfr', 'aye frr', 'a** *r', '‎Â‎YE fr', 'ÀYE FR', 'Æ FR', 'ÁŸE FR', 'ong fr',
@@ -809,7 +809,7 @@ async def on_message(message):
     if (any(x == user_message for x in aye_list)) or (
     any(x in user_message.lower() for x in aye_list)) or user_message.lower() == 'aye':
         NPCList[1] = 1
-        embedVar = dbObject.AddAyeCounter(message.author.id)
+        #embedVar = dbObject.AddAyeCounter(message.author.id)
         # await message.reply('Thats Crazy bro')
 
         # await message.channel.send(embed=embedVar)
@@ -852,6 +852,7 @@ async def on_message(message):
             embedVar = dbObject.AddDNCounter(message.author.id)
             await message.channel.send(embed=embedVar)
     elif NPCCounter > 1:
+        print("more than 1")
         if NPCList[0] == 1:
             embedVar = dbObject.AddAskCounter(message.author.id)
         elif NPCList[1] == 1:
